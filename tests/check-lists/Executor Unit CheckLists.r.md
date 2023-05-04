@@ -44,22 +44,24 @@
 
 ##### Business layer
 
-* [unknown] C14 `test executeCode` : 코드를 실행한다.
+* [done] C14 `test executeCode` : 코드를 실행한다.
 
     * 사용자 식별자(`UserId`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드(`Code`)를 입력받아 코드를 실행한다.
 
-* [unknown] C15 `test executeCode` : 코드를 실행할 때, 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
+* [done] C15 `test executeCode` : 코드를 실행할 때, 사용자 정보를 식별할 수 없다면 `NotFoundException` 예외가 발생한다.
 
     * 존재하지 않는 사용자의 식별자(`NotFoundUserId`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드(`Code`)를 입력받는다.
 
-    * 사용자를 조회할 때, 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
+    * 사용자를 조회할 때, 사용자 정보를 식별할 수 없다면 `NotFoundException` 예외가 발생한다.
 
-* [unknown] C16 `test executeCode` : 코드를 실행할 때, 문제 식별자(`QuestionId`)에 맞는 문제(`Question`)가
-  없다면 `NotFoundQuestionException` 예외가 발생한다.
+* [done] C16 `test executeCode` : 코드를 실행할 때, 문제 식별자(`QuestionId`)에 맞는 문제(`Question`)가
+  없다면 `NotFoundException` 예외가 발생한다.
 
     * 사용자 식별자(`UserId`), 문제 식별자(`NotFoundQuestionId`), 코드 타입(`Lang`), 코드(`Code`)를 입력받는다.
 
-    * 문제 식별자(`QuestionId`)를 이용해 문제(`Question`)를 조회할 때 존재하지 않는다면 `NotFoundQuestionException` 예외가 발생한다.
+    * 문제 식별자(`QuestionId`)를 이용해 문제(`Question`)를 조회할 때 존재하지 않는다면 `NotFoundException` 예외가 발생한다.
+
+* [done] 51 `test executeCode` : 코드를 실행할 때, `executionCode`에서 반환받은 데이터가 없다면 `NotFoundException` 예외가 발생한다.
 
 * [unknown] C17 `test findResults` : 결과 리스트를 조회한다.
 
