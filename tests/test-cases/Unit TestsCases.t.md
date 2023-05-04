@@ -9,7 +9,7 @@
     * 사용자가 유효한지 식별하고 식별자를 반환한다.(`ensureUser(Token)`)
     * 코드를 실행한다. (`ExecutorService#executeCode`)
 
-* 8 `test executeCode` : 코드를 실행할 때, 사용자가 유효하지 않으면 401을 반환한다.
+* 8 `test executeCode` : 코드를 실행할 때, 사용자가 유효하지 않으면 UnauthenticationException 예외를 반환한다.
   * 유효하지 않은 사용자 식별자(`InvalidToken`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드(`Code`)를 입력받는다.
   * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
 
@@ -17,7 +17,7 @@
   * 사용자 식별자(`Token`), 문제 식별자(`QuestionId`)를 입력받는다.
   * 사용자가 유효한지 식별하고 식별자를 반환한다.(`ensureUser(Token)`)
 
-* 10 `test findResults` : 결과 리스트를 조회할 때, 사용자가 유효하지 않으면 401을 반환한다.
+* 10 `test findResults` : 결과 리스트를 조회할 때, 사용자가 유효하지 않으면 UnauthenticationException 예외를 반환한다.
   * 사용자 식별자(`InvalidToken`), 문제 식별자(`QuestionId`)를 입력받는다.
   * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
 
@@ -26,11 +26,11 @@
   * 사용자가 유효한지 식별하고 식별자를 반환한다.(`ensureUser(Token)`)
   * 결과 리스트를 조회한다.(`ExecutorService#findResults`)
 
-* 12 `test findResult` : 결과를 조회할 때, 사용자가 유효하지 않으면 401을 반환한다.
+* 12 `test findResult` : 결과를 조회할 때, 사용자가 유효하지 않으면 UnauthenticationException 예외를 반환한다.
   * 사용자 식별자(`InvalidToken`), 결과 식별자(`ResultId`)를 입력받는다.
   * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
 
-* 13 `test findResult` : 결과를 조회할 때, 값이 존재하지 않으면 404을 반환한다.
+* 13 `test findResult` : 결과를 조회할 때, 값이 존재하지 않으면 NotFoundException 예외를 반환한다.
   * 사용자 식별자(`Token`), 결과 식별자(`NotFoundResultId`)를 입력받는다.
   * 결과가 존재하지 않으면 `404 Not Found`를 반환한다.
 
@@ -148,7 +148,7 @@
 
 #### Business layer
 
-* 47 `test executeCode` : 코드(`Code`)를 실행한다.
+* 44 `test executeCode` : 코드(`Code`)를 실행한다.
   * 테스트 케이스(`TestCases`)를 입력해 코드(`Code`)를 실행한다.
   * 코드를 실행해 결과를 반환한다.(`Code#excute`)
 
@@ -156,29 +156,29 @@
 
 ##### Code
 
-* 44 `test Code` : 코드(`Code`)를 생성한다.
+* 45 `test Code` : 코드(`Code`)를 생성한다.
   * 코드(`Code`)와 타입 정보(`Lang`)을 입력해 코드를 생성한다.
 
-* 45 `test execute` : 코드를 여러 번 실항한다.
+* 46 `test execute` : 코드를 여러 번 실항한다.
   * 코드를 여러 번 실행해 실행 결과(`ExecutionResult`)를 반환한다.
 
-* 46 `test execute` : 코드를 실행한다.
+* 47 `test execute` : 코드를 실행한다.
   * 코드를 실행해 실행 결과(`ExecutionResult`)를 반환한다.
 
 ##### SucceededResult
 
-* 47 `test SucceededResult` : 성공한 실행 결과를 생성한다.
+* 48 `test SucceededResult` : 성공한 실행 결과를 생성한다.
   * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `true`이다.
   * 실행 시간(`ExecutionTime`), 사용한 메모리 평균치 정보(`UsedMemeory`)를 입력받아 성공한 실행 결과를 생성한다.
 
 ##### FailedResult
 
-* 48 `test FailedResult` : 실패 원인이 `DIFFERENT`인 실행 결과를 생성한다.
+* 49 `test FailedResult` : 실패 원인이 `DIFFERENT`인 실행 결과를 생성한다.
   * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
   * `DIFFERENT`일 때 실패 정보는 실제 값과 예상 값의 차이 정보가 포함된다.
   * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 실행 결과를 생성한다.
 
-* 49 `test FailedResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
+* 50 `test FailedResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
   * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
   * `ERROR`일 때 실패 정보는 반환받은 에러 클래스 정보이다.
   * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 실행 결과를 생성한다.
