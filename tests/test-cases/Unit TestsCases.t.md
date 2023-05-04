@@ -91,44 +91,44 @@
   * 코드 타입(`Lang`)과 코드(`InvalidCode`)를 입력받는다.
   * 코드(`Code`)를 검증할 때, 코드(`Code`)가 없거나 비어있으면 `InvalidCodeException` 예외가 발생한다.
 
-##### TestResult
+##### ExecutionResult
 
-* 27 `test TestResult` : 테스트 결과를 생성한다.
+* 27 `test ExecutionResult` : 테스트 결과를 생성한다.
   *  결과 식별자(`Id`), 사용자의 식별자(`UserId`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드 정보(`Code`), 사용자 식별자(`UserId`), 솔루션 식별자(`SolutionId`), 문제 식별자(`QuestionId`), 성공 여부 정보(`IsSucceed`)를 가진다.
 
-* 28 `test TestResult` : 테스트 결과를 생성할 때, 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
+* 28 `test ExecutionResult` : 테스트 결과를 생성할 때, 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
   * 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
 
-* 29 `test TestResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
+* 29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
   * 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
-* 30 `test TestResult` : 테스트 결과를 생성할 때, 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
+* 30 `test ExecutionResult` : 테스트 결과를 생성할 때, 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
   * 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
-##### SucceededTestResult
+##### SucceededResult
 
-* 31 `test SucceededTestResult` : 성공한 테스트 결과를 생성한다.
+* 31 `test SucceededResult` : 성공한 테스트 결과를 생성한다.
   * 테스트 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `true`이다.
   * 총 실행 시간(`TotalExecutionTime`), 사용한 메모리 평균치 정보(`AverageUsedMemeory`)를 입력받아 성공한 테스트 결과를 생성한다.
 
-* 32 `test SucceededTestResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은 음수면 `InvalidSucceededResultException` 예외가 발생한다.
+* 32 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은 음수면 `InvalidSucceededResultException` 예외가 발생한다.
 
-* 33 `test SucceededTestResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은 없거나 비어있으면 `InvalidSucceededResultException` 예외가 발생한다.
+* 33 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은 없거나 비어있으면 `InvalidSucceededResultException` 예외가 발생한다.
 
-* 34 `test SucceededTestResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는 음수면 `InvalidSucceededResultException` 예외가 발생한다.
+* 34 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는 음수면 `InvalidSucceededResultException` 예외가 발생한다.
 
-* 35 `test SucceededTestResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는 없거나 비어있으면 `InvalidSucceededResultException` 예외가 발생한다.
+* 35 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는 없거나 비어있으면 `InvalidSucceededResultException` 예외가 발생한다.
 
-##### FailedTestResult
+##### FailedResult
 
-* 36 `test FailedTestResult` : 실패한 테스트 결과를 생성한다.
+* 36 `test FailedResult` : 실패한 테스트 결과를 생성한다.
   * 테스트 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
   * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 테스트 결과를 생성한다.
   * 실패 원인은 `DIFFERENT`, `ERROR` 중 하나의 정보를 가진다.
 
-* 37 `test FailedTestResult` : 실패한 테스트 결과를 생성할 때, 실패 원인(`Cause`)이 없으면 `InvalidFailedResultException` 예외가 발생한다.
+* 37 `test FailedResult` : 실패한 테스트 결과를 생성할 때, 실패 원인(`Cause`)이 없으면 `InvalidFailedResultException` 예외가 발생한다.
 
-* 38 `test FailedTestResult` : 실패한 테스트 결과를 생성할 때, 실패 정보(`Message`)가 없거나 비어있으면 `InvalidFailedResultException` 예외가 발생한다.
+* 38 `test FailedResult` : 실패한 테스트 결과를 생성할 때, 실패 정보(`Message`)가 없거나 비어있으면 `InvalidFailedResultException` 예외가 발생한다.
 
 ##### TestCases
 
@@ -144,7 +144,7 @@
 * 42 `test TestCases` : 테스트 케이스를 생성한다.
   * 테스트 케이스 입력(`Input`)과 테스트 케이스 출력(`Output`)을 입력받아 테스트 케이스를 생성한다.
 
-* 43 `test TestCases` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Input`)이 없거나 비어있으면 `InvalidTestCaseException` 예외가 발생한다.
+* 43 `test TestCases` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`output`)이 없거나 비어있으면 `InvalidTestCaseException` 예외가 발생한다.
 
 ### Executor service spec
 
@@ -167,20 +167,20 @@
 * 47 `test execute` : 코드를 실행한다.
   * 코드를 실행해 실행 결과(`ExecutionResult`)를 반환한다.
 
-##### SucceededResult
+##### SucceededTestResult
 
-* 48 `test SucceededResult` : 성공한 실행 결과를 생성한다.
+* 48 `test SucceededTestResult` : 성공한 실행 결과를 생성한다.
   * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `true`이다.
   * 실행 시간(`ExecutionTime`), 사용한 메모리 평균치 정보(`UsedMemeory`)를 입력받아 성공한 실행 결과를 생성한다.
 
-##### FailedResult
+##### FailedTestResult
 
-* 49 `test FailedResult` : 실패 원인이 `DIFFERENT`인 실행 결과를 생성한다.
+* 49 `test FailedTestResult` : 실패 원인이 `DIFFERENT`인 실행 결과를 생성한다.
   * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
   * `DIFFERENT`일 때 실패 정보는 실제 값과 예상 값의 차이 정보가 포함된다.
   * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 실행 결과를 생성한다.
 
-* 50 `test FailedResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
+* 50 `test FailedTestResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
   * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
   * `ERROR`일 때 실패 정보는 반환받은 에러 클래스 정보이다.
   * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 실행 결과를 생성한다.
