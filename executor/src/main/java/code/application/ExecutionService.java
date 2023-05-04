@@ -27,6 +27,9 @@ import reactor.core.publisher.Mono;
 @Service
 @RequiredArgsConstructor
 public class ExecutionService {
+    private static final String FAILED_MESSAGE_FORMAT = "테스트가 실패했습니다. %s";
+    private static final String SUCCEEDED_MESSAGE_FORMAT =
+            "테스트가 성공했습니다. 평균 실행 시간은 %sms 이며, 평균 메모리 사용량은 %sKB 입니다.";
     private final ExecutorService executorService;
     private final MemberRepository memberRepository;
     private final QuestionRepository questionRepository;
@@ -39,16 +42,8 @@ public class ExecutionService {
                                .switchIfEmpty(Mono.error(NotFoundException.notFoundQuestion(questionId)))
                                .flatMap(question -> executeCode(request, question))
                                .switchIfEmpty(Mono.error(ExecutionException.executeFailed()))
-                               .flatMap(testResult -> saveResult(memberId, questionId,
-                                                                 request, testResult))
-                               .flatMap(result -> {
-                                   if (result instanceof SucceededResult succeededResult) {
-                                       return Mono.just(
-                                               getSucceededResultResponse(succeededResult));
-                                   }
-                                   return Mono.just(
-                                           getFailedResultResponse((FailedResult) result));
-                               });
+                               .flatMap(testResult -> getResultMono(memberId, questionId, request, testResult))
+                               .flatMap(ExecutionService::getExecutionResponseMono);
     }
 
     public Mono<ExecutionResponse> findResult(String memberId, String resultId) {
@@ -62,7 +57,7 @@ public class ExecutionService {
     private static ExecutionResponse getFailedResultResponse(FailedResult failedResult) {
         return new ExecutionResponse(failedResult.getId(), failedResult.getQuestionId(),
                                      failedResult.getIsSucceed(),
-                                     String.format("테스트가 실패했습니다. %s", failedResult.getMessage()),
+                                     String.format(FAILED_MESSAGE_FORMAT, failedResult.getMessage()),
                                      failedResult.getCreatedAt());
     }
 
@@ -70,14 +65,23 @@ public class ExecutionService {
         return new ExecutionResponse(succeededResult.getId(), succeededResult.getQuestionId(),
                                      succeededResult.getIsSucceed(),
                                      String.format(
-                                             "테스트가 성공했습니다. 평균 실행 시간은 %sms 이며, 평균 메모리 사용량은 %sKB 입니다.",
+                                             SUCCEEDED_MESSAGE_FORMAT,
                                              succeededResult.getTotalExecutionTime(),
                                              succeededResult.getAverageMemoryUsage()),
                                      succeededResult.getCreatedAt());
     }
 
-    private Mono<ExecutionResult> saveResult(String memberId, String questionId,
-                                             ExecutionRequest request, TestResult testResult) {
+    private static Mono<ExecutionResponse> getExecutionResponseMono(ExecutionResult result) {
+        if (result instanceof SucceededResult succeededResult) {
+            return Mono.just(
+                    getSucceededResultResponse(succeededResult));
+        }
+        return Mono.just(
+                getFailedResultResponse((FailedResult) result));
+    }
+
+    private Mono<ExecutionResult> getResultMono(String memberId, String questionId,
+                                                ExecutionRequest request, TestResult testResult) {
         if (testResult.isSucceeded()) {
             return executionResultRepository.save(
                     getSucceededResult(memberId, questionId, request, (SucceededTestResult) testResult));
