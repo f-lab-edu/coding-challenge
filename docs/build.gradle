@@ -5,9 +5,8 @@ plugins {
 group = 'docs'
 version = '0.0.1-SNAPSHOT'
 
-bootJar { enabled = false }
+bootJar { enabled = true }
 jar { enabled = false }
-
 
 configurations {
     asciidoctorExtensions
@@ -19,6 +18,7 @@ repositories {
 
 ext {
     set('snippetsDir', file("build/generated-snippets"))
+    set('docsOutputDir', file("build/docs/asciidoc"))
 }
 
 dependencies {
@@ -34,6 +34,8 @@ dependencies {
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     testImplementation 'org.springframework.restdocs:spring-restdocs-webtestclient'
     testImplementation 'io.projectreactor:reactor-test'
+
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 }
 
 test {
@@ -43,15 +45,13 @@ test {
 
 asciidoctor {
     dependsOn test
+    configurations 'asciidoctorExtensions'
     inputs.dir snippetsDir
 }
 
-asciidoctor.doFirst {
-    delete file('src/main/resources/static/docs')
-}
-
-task copyDocument(type: Copy) {
+bootJar {
     dependsOn asciidoctor
-    from file("build/docs/asciidoc")
-    into file("src/main/resources/static/docs")
+    from (docsOutputDir) {
+        into 'static/docs'
+    }
 }
