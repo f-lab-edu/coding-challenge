@@ -21,6 +21,7 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import code.dto.ExecutionResponse;
+import code.exception.NotFoundException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -67,11 +68,64 @@ final class ExecutionControllerDoc extends ExecutorDocumentation {
         post__executeCode();
     }
 
+    //C4
+    @Test
+    void post__executeCode_inputNullData() throws JsonProcessingException {
+        var contents = new HashMap<String, String>();
+        contents.put("lang", null);
+        contents.put("code", null);
+        var contentsString = objectMapper.writeValueAsString(contents);
+
+        webTestClient
+                .post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/v1/codes/executions")
+                        .queryParam("questionId", QUESTION_ID)
+                        .build())
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(contentsString)
+                .accept(MediaType.TEXT_EVENT_STREAM)
+                .exchange()
+                .expectStatus().isBadRequest()
+                .expectBody()
+                .consumeWith(
+                        document("executor/{method-name}",
+                                 getDocumentRequest(),
+                                 getDocumentResponse()
+                        ));
+    }
+
+
     //C5
     @Test
     void get_findResults() {
         when(executionService.findResults(any(), any()))
                 .thenReturn(Flux.just(DIFFERENT_EXECUTION_RESPONSE, SUCCEEDED_EXECUTION_RESPONSE));
+
+        webTestClient.get().uri(uriBuilder -> uriBuilder
+                             .path("/v1/codes/results")
+                             .queryParam("questionId", QUESTION_ID)
+                             .build())
+                     .accept(MediaType.APPLICATION_JSON)
+                     .exchange()
+                     .expectStatus().isOk()
+                     .expectBody()
+                     .consumeWith(
+                             document("executor/{method-name}",
+                                      getDocumentRequest(),
+                                      getDocumentResponse(),
+                                      queryParameters(parameterWithName("questionId").description(
+                                              "문제 식별자를 의미하며 Null 일 수 없습니다.")
+                                      )
+                             )
+                     );
+    }
+
+    //C5
+    @Test
+    void get_findResults_returnEmptyCollection() {
+        when(executionService.findResults(any(), any()))
+                .thenReturn(Flux.empty());
 
         webTestClient.get().uri(uriBuilder -> uriBuilder
                              .path("/v1/codes/results")
@@ -103,6 +157,29 @@ final class ExecutionControllerDoc extends ExecutorDocumentation {
                      .accept(MediaType.APPLICATION_JSON)
                      .exchange()
                      .expectStatus().isOk()
+                     .expectBody()
+                     .consumeWith(
+                             document("executor/{method-name}",
+                                      getDocumentRequest(),
+                                      getDocumentResponse(),
+                                      pathParameters(parameterWithName("resultsId").description(
+                                              "결과 식별자를 의미하며 Null 일 수 없습니다.")
+                                      )
+                             )
+                     );
+    }
+
+    //C6
+    @Test
+    void get__findResult_notFound() {
+        String resultId = createId();
+        when(executionService.findResult(any(), any()))
+                .thenReturn(Mono.error(NotFoundException.notFoundResult(resultId)));
+
+        webTestClient.get().uri("/v1/codes/results/{resultsId}", resultId)
+                     .accept(MediaType.APPLICATION_JSON)
+                     .exchange()
+                     .expectStatus().isNotFound()
                      .expectBody()
                      .consumeWith(
                              document("executor/{method-name}",

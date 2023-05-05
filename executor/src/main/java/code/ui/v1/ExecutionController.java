@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import code.application.ExecutionService;
 import code.dto.ExecutionRequest;
 import code.dto.ExecutionResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import reactor.core.publisher.Mono;
 
@@ -34,7 +35,7 @@ public class ExecutionController {
             produces = MediaType.TEXT_EVENT_STREAM_VALUE
     )
     public Mono<EntityModel<ExecutionResponse>> executeCode(@RequestParam String questionId,
-                                                            @RequestBody ExecutionRequest request) {
+                                                            @Valid @RequestBody ExecutionRequest request) {
         return executionService.executeCode(getUserId(), questionId, request).flatMap(
                 executionResponse -> {
                     var controller = methodOn(ExecutionController.class);

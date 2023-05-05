@@ -6,10 +6,6 @@
 :toclevels: 2
 :sectlinks:
 
-ifndef::snippets[]
-:snippets: ./build/generated-snippets
-endif::[]
-
 == Executor API
 
 === 사용자의 코드를 실행한다.
@@ -26,25 +22,26 @@ include::{snippets}/executor/post__execute-code_return-succeeded-result/request-
 .Request Param
 include::{snippets}/executor/post__execute-code_return-succeeded-result/query-parameters.adoc[]
 
-==== HTTP response - 실행에 성공한 경우
+==== 응답 형식
 
-코드 실행에 성공하면 다음과 같은 메시지를 반환합니다. SSE 형식으로 데이터가 전달됩니다.
+코드 실행에 성공하면 다음과 같은 메시지를 반환합니다. SSE 형식으로 데이터가 전달됩니다. 실행한 결과 값이 다르면 다음과 같은 메시지를 반환합니다. 실행에 실패하면 다음과 같은 메시지를 반환합니다.
 
-include::{snippets}/executor/post__execute-code_return-succeeded-result/http-response.adoc[]
 
-==== HTTP response - 출력 값이 다른 경우
+.정상(200,OK)
+[format=csv,cols="a"]
+|===
+실행에 성공한 경우, include::{snippets}/executor/post__execute-code_return-succeeded-result/http-response.adoc[]
+출력 값이 다른 경우, include::{snippets}/executor/post__execute-code_return-failed-result_-cause-is-different//http-response.adoc[]
+예외가 발생한 경우, include::{snippets}/executor/post__execute-code_return-failed-result_-cause-is-error//http-response.adoc[]
+|===
 
-실행한 결과 값이 다르면 다음과 같은 메시지를 반환합니다.
+.입력값이 없는 경우(400, Bad Request)
+[format=csv,cols="a"]
+|===
+실행에 성공한 경우, include::{snippets}/executor/post__execute-code_input-null-data//http-response.adoc[]
+|===
 
-include::{snippets}/executor/post__execute-code_return-failed-result_-cause-is-different//http-response.adoc[]
-
-==== HTTP response - 예외가 발생한 경우
-
-실행에 실패하면 다음과 같은 메시지를 반환합니다.
-
-include::{snippets}/executor/post__execute-code_return-failed-result_-cause-is-error//http-response.adoc[]
-
-> 그 외에 예외 사항은 입력 값이 없거나 문제 번호가 없으면 ``400 Bad Request``를 반환하고, 사용자 정보가 존재하지 않은 경우 ``401 UnAuthentication``을 반환합니다.
+CAUTION: 그 외에 사용자 정보가 존재하지 않은 경우 ``401 UnAuthentication``을 반환합니다.
 
 === 결과 목록을 조회한다.
 
@@ -54,13 +51,18 @@ include::{snippets}/executor/post__execute-code_return-failed-result_-cause-is-e
 
 include::{snippets}/executor/get_find-results///http-request.adoc[]
 
-==== HTTP response
+==== 응답 형식
 
 목록을 반환합니다. 값이 존재하지 않는 경우 빈 값이 반환됩니다.
 
-include::{snippets}/executor/get_find-results//http-response.adoc[]
+.정상(200,OK)
+[format=csv,cols="a"]
+|===
+값이 존재하는 경우, include::{snippets}/executor/get_find-results//http-response.adoc[]
+값이 비어있는 경우, include::{snippets}/executor/get_find-results_return-empty-collection//http-response.adoc[]
+|===
 
-> 사용자 정보가 존재하지 않은 경우 ``401 UnAuthentication``을 반환합니다.
+CAUTION: 사용자 정보가 존재하지 않은 경우 ``401 UnAuthentication``을 반환합니다.
 
 === 결과를 조회한다.
 
@@ -73,11 +75,20 @@ include::{snippets}/executor/get__find-result_return-succeeded-result//http-requ
 .Request Param
 include::{snippets}/executor/get__find-result_return-succeeded-result/path-parameters.adoc[]
 
-==== HTTP response - 실행에 성공한 경우
+==== 응답 형식
 
-결과를 반환합니다. 결과가 없는 경우 ``404 Not Found``를 반환합니다.
+결과를 반환합니다.
 
-include::{snippets}/executor/get__find-result_return-succeeded-result/http-response.adoc[]
+.정상(200,OK)
+[format=csv,cols="a"]
+|===
+결과가 있는 경우, include::{snippets}/executor/get__find-result_return-succeeded-result/http-response.adoc[]
+|===
 
-> 결과 번호가 없는 경우 ``400 Bad Request``를 반환하고, 사용자 정보가 존재하지 않은 경우 ``401 UnAuthentication``을 반환합니다.
+.값이 없는 경우(404,Not Found)
+[format=csv,cols="a"]
+|===
+결과가 없는 경우, include::{snippets}/executor/get__find-result_not-found//http-response.adoc[]
+|===
 
+CAUTION: 결과 식별자가 없는 경우 ``400 Bad Request``를 반환하고, 사용자 정보가 존재하지 않은 경우 ``401 UnAuthentication``을 반환합니다.
