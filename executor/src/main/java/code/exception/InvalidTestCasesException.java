@@ -7,6 +7,6 @@ public final class InvalidTestCasesException extends RuntimeException {
     }
 
     public static InvalidTestCasesException invalidTestCases() {
-        return new InvalidTestCasesException("테스트 케이스가 유효하지 않습니다.");
+        return new InvalidTestCasesException("유효하지 않은 테스트 케이스 목록");
     }
 }

@@ -193,13 +193,12 @@
 
 ###### TestCase
 
-* [unknown] C42 `test TestCase` : 테스트 케이스를 생성한다.
+* [done] C42 `test TestCase` : 테스트 케이스를 생성한다.
 
     * 테스트 케이스 입력(`Input`)과 테스트 케이스 출력(`Output`)을 입력받아 테스트 케이스를 생성한다.
 
-* [unknown] C43 `test TestCase` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Output`)이 없거나 비어있으면 `InvalidTestCaseException`
-  예외가
-  발생한다.
+* [done] C43 `test TestCase` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Output`)이 없거나 비어있으면 `InvalidTestCaseException`
+  예외가 발생한다.
 
 #### Executor service spec
 
