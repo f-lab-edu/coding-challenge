@@ -182,22 +182,22 @@
 
 ###### TestCases
 
-* [unknown] C39 `test TestCases` : 테스트 케이스 목록(`TestCases`)을 생성한다.
+* [done] C39 `test TestCases` : 테스트 케이스 목록(`TestCases`)을 생성한다.
 
     * 문제(`Question`)의 테스트 케이스의 목록(`TestCases`)을 가진다.
 
-* [unknown] C40 `test TestCases` : 테스트 케이스 리스트(`TestCases`)는 수정하면 `UnsupportedOperationException` 예외가 발생한다.
+* [done] C40 `test TestCases` : 테스트 케이스 리스트(`TestCases`)는 수정하면 `UnsupportedOperationException` 예외가 발생한다.
 
-* [unknown] C41 `test TestCases` : 테스트 케이스 리스트(`TestCases`)를 생성할 때, 테스트 케이스 리스트가 없거나
+* [done] C41 `test TestCases` : 테스트 케이스 리스트(`TestCases`)를 생성할 때, 테스트 케이스 리스트가 없거나
   비어있으면 `InvalidTestCasesException` 예외가 발생한다.
 
-###### TestCases
+###### TestCase
 
-* [unknown] C42 `test TestCases` : 테스트 케이스를 생성한다.
+* [unknown] C42 `test TestCase` : 테스트 케이스를 생성한다.
 
     * 테스트 케이스 입력(`Input`)과 테스트 케이스 출력(`Output`)을 입력받아 테스트 케이스를 생성한다.
 
-* [unknown] C43 `test TestCases` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Output`)이 없거나 비어있으면 `InvalidTestCaseException`
+* [unknown] C43 `test TestCase` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Output`)이 없거나 비어있으면 `InvalidTestCaseException`
   예외가
   발생한다.
 
