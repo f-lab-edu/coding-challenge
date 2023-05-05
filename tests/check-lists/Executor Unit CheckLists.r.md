@@ -30,15 +30,15 @@
 
 * [unknown] C8 `test executeCode` : 코드를 실행할 때, 사용자가 유효하지 않으면 UnauthenticationException 예외를 반환한다.
 
-  * 유효하지 않은 사용자 식별자(`InvalidToken`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드(`Code`)를 입력받는다.
+    * 유효하지 않은 사용자 식별자(`InvalidToken`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드(`Code`)를 입력받는다.
 
-  * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
+    * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
 
 * [unknown] C10 `test findResults` : 결과 리스트를 조회할 때, 사용자가 유효하지 않으면 UnauthenticationException 예외를 반환한다.
 
-  * 사용자 식별자(`InvalidToken`), 문제 식별자(`QuestionId`)를 입력받는다.
+    * 사용자 식별자(`InvalidToken`), 문제 식별자(`QuestionId`)를 입력받는다.
 
-  * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
+    * 사용자를 검증할 때 유효하지 않으면 `401 UnAuthorized`를 반환한다.
 
 #### Execution service test cases
 
@@ -63,37 +63,37 @@
 
 * [done] 51 `test executeCode` : 코드를 실행할 때, `executionCode`에서 반환받은 데이터가 없다면 `NotFoundException` 예외가 발생한다.
 
-* [unknown] C17 `test findResults` : 결과 리스트를 조회한다.
+* [done] C17 `test findResults` : 결과 리스트를 조회한다.
 
     * 사용자 식별자(`UserId`)와 문제 식별자(`QuestionId`)를 입력받아 결과를 조회한다.
 
-* [unknown] C18 `test findResults` : 결과 리스트를 조회할 때 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
+* [done] C18 `test findResults` : 결과 리스트를 조회할 때 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
 
     * 사용자 식별자(`NotFoundUserId`)와 문제 식별자(`QuestionId`)를 입력받는다.
 
     * 사용자를 조회할 때, 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
 
-* [unknown] C19 `test findResults` : 결과 리스트를 조회할 때 문제 정보(`Question`)가 존재하지 않으면 `NotFountQuestionException` 예외가
+* [done] C19 `test findResults` : 결과 리스트를 조회할 때 문제 정보(`Question`)가 존재하지 않으면 `NotFountQuestionException` 예외가
   발생한다.
 
     * 사용자 식별자(`UserId`)와 문제 식별자(`NotFoundQuestionId`)를 입력받는다.
 
     * 문제 식별자(`QuestionId`)에 대한 문제(`Question`)가 있는지 검증할 때, 존재하지 않으면 `NotFountQuestionException` 예외가 발생한다.
 
-* [unknown] C20 `test findResults` : 결과 리스트를 조회할 때, 값이 비어있으면 빈 리스트를 반환한다.
+* [done] C20 `test findResults` : 결과 리스트를 조회할 때, 값이 비어있으면 빈 리스트를 반환한다.
 
-* [unknown] C21 `test findResult` : 결과를 조회한다.
+* [done] C21 `test findResult` : 결과를 조회한다.
 
     * 사용자 식별자(`UserId`)와 결과 식별자(`ResultId`)를 입력받아 결과를 조회한다.
 
-* [unknown] C22 `test findResult` : 결과를 조회할 때 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
+* [done] C22 `test findResult` : 결과를 조회할 때 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
 
     * 사용자 식별자(`NotFoundUserId`)와 결과 식별자(`ResultId`)를 입력받는다.
 
     * 사용자를 조회할 때, 사용자 정보를 식별할 수 없다면 `NotFoundUserException` 예외가 발생한다.
 
-* [unknown] C23 `test findResult` : 결과를 조회할 때, 결과 식별자(`ResultId`)에 맞는 결과(`Result`)가
-  없다면 `NotFoundResultException` 예외가 발생한다.
+* [done] C23 `test findResult` : 결과를 조회할 때, 결과 식별자(`ResultId`)에 맞는 결과(`Result`)가 없다면 `NotFoundResultException`
+  예외가 발생한다.
 
     * 사용자 식별자(`UserId`)와 결과 식별자(`NotFoundResultId`)를 입력받는다.
 
@@ -132,12 +132,14 @@
 
     * 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
 
-* [unknown] C29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException`
+* [unknown] C29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나
+  비어있으면 `IllegalArgumentException`
   예외가 발생한다.
 
     * 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
-* [unknown] C30 `test ExecutionResult` : 테스트 결과를 생성할 때, 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException`
+* [unknown] C30 `test ExecutionResult` : 테스트 결과를 생성할 때, 솔루션 식별자(`SolutionId`)가 없거나
+  비어있으면 `IllegalArgumentException`
   예외가 발생한다.
 
     * 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
@@ -195,7 +197,8 @@
 
     * 테스트 케이스 입력(`Input`)과 테스트 케이스 출력(`Output`)을 입력받아 테스트 케이스를 생성한다.
 
-* [unknown] C43 `test TestCases` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Output`)이 없거나 비어있으면 `InvalidTestCaseException` 예외가
+* [unknown] C43 `test TestCases` : 테스트 케이스를 생성할 때, 테스트 케이스 출력(`Output`)이 없거나 비어있으면 `InvalidTestCaseException`
+  예외가
   발생한다.
 
 #### Executor service spec

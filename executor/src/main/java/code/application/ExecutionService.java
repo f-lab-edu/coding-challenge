@@ -43,15 +43,33 @@ public class ExecutionService {
                                .flatMap(question -> executeCode(request, question))
                                .switchIfEmpty(Mono.error(ExecutionException.executeFailed()))
                                .flatMap(testResult -> getResultMono(memberId, questionId, request, testResult))
-                               .flatMap(ExecutionService::getExecutionResponseMono);
+                               .flatMap(executionResult -> Mono.just(getExecutionResponse(executionResult)));
     }
 
     public Mono<ExecutionResponse> findResult(String memberId, String resultId) {
-        return null;
+        return memberRepository.findById(memberId)
+                               .switchIfEmpty(Mono.error(NotFoundException.notFoundMember(memberId)))
+                               .flatMap(user -> executionResultRepository.findById(resultId))
+                               .switchIfEmpty(Mono.error(NotFoundException.notFoundResult(resultId)))
+                               .flatMap(result -> Mono.just(getExecutionResponse(result)));
     }
 
     public Flux<ExecutionResponse> findResults(String memberId, String questionId) {
-        return null;
+        return memberRepository.findById(memberId)
+                               .switchIfEmpty(Mono.error(NotFoundException.notFoundMember(memberId)))
+                               .flatMap(user -> questionRepository.findById(questionId))
+                               .switchIfEmpty(Mono.error(NotFoundException.notFoundQuestion(questionId)))
+                               .flux()
+                               .flatMap(question -> executionResultRepository
+                                       .findAllByMemberIdAndQuestionId(memberId, questionId))
+                               .flatMap(result -> Flux.just(getExecutionResponse(result)));
+    }
+
+    private static ExecutionResponse getExecutionResponse(ExecutionResult result) {
+        if (result instanceof SucceededResult succeededResult) {
+            return getSucceededResultResponse(succeededResult);
+        }
+        return getFailedResultResponse((FailedResult) result);
     }
 
     private static ExecutionResponse getFailedResultResponse(FailedResult failedResult) {
@@ -69,15 +87,6 @@ public class ExecutionService {
                                              succeededResult.getTotalExecutionTime(),
                                              succeededResult.getAverageMemoryUsage()),
                                      succeededResult.getCreatedAt());
-    }
-
-    private static Mono<ExecutionResponse> getExecutionResponseMono(ExecutionResult result) {
-        if (result instanceof SucceededResult succeededResult) {
-            return Mono.just(
-                    getSucceededResultResponse(succeededResult));
-        }
-        return Mono.just(
-                getFailedResultResponse((FailedResult) result));
     }
 
     private Mono<ExecutionResult> getResultMono(String memberId, String questionId,
