@@ -4,6 +4,8 @@ import code.domain.*
 import code.dto.*
 import code.exception.ExecutionException
 import code.exception.NotFoundException
+import code.execution.ExecutionService
+import code.executor.CodeExecutorService
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
@@ -24,7 +26,7 @@ class ExecutionServiceTest extends Specification {
     def MEMBER_ID = "this-is-user-id"
     def QUESTION_ID = UUID.randomUUID().toString()
 
-    def executorService = Mock(ExecutorService)
+    def executorService = Mock(CodeExecutorService)
     def memberRepository = Mock(MemberRepository)
     def questionRepository = Mock(QuestionRepository)
     def executionResultRepository = Mock(ExecutionResultRepository)

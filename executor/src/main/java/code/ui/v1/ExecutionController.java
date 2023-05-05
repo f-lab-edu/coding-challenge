@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import code.application.ExecutionService;
+import code.execution.ExecutionService;
 import code.dto.ExecutionRequest;
 import code.dto.ExecutionResponse;
 import jakarta.validation.Valid;

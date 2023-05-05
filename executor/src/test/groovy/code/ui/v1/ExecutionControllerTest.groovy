@@ -1,6 +1,6 @@
 package code.ui.v1
 
-import code.application.ExecutionService
+import code.execution.ExecutionService
 import code.dto.ExecutionRequest
 import code.dto.ExecutionResponse
 import org.junit.jupiter.api.extension.ExtendWith
