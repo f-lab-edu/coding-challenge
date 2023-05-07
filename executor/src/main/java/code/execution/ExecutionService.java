@@ -16,7 +16,7 @@ import code.dto.Code;
 import code.dto.ExecutionRequest;
 import code.dto.ExecutionResponse;
 import code.dto.FailedTestResult;
-import code.dto.Lang;
+import code.domain.Lang;
 import code.dto.SucceededTestResult;
 import code.dto.TestResult;
 import code.exception.ExecutionException;

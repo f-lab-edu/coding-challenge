@@ -1,4 +1,4 @@
-package code.dto;
+package code.domain;
 
 public enum Lang {
     JAVA11,

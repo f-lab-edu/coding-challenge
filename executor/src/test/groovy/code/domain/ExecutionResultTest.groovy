@@ -1,7 +1,6 @@
 package code.domain
 
 import code.dto.Code
-import code.dto.Lang
 import spock.lang.Specification
 
 import java.time.LocalDateTime

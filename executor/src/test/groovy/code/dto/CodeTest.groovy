@@ -1,5 +1,6 @@
 package code.dto
 
+import code.domain.Lang
 import code.exception.InvalidCodeTypeException
 import spock.lang.Specification
 
@@ -29,7 +30,7 @@ class CodeTest extends Specification {
 
         where:
         lang    | code
-        Lang.JAVA11  | JAVA_CODE
+        Lang.JAVA11 | JAVA_CODE
         Lang.PYTHON3 | PYTHON_CODE
     }
 

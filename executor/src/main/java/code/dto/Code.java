@@ -1,5 +1,6 @@
 package code.dto;
 
+import code.domain.Lang;
 import code.exception.InvalidCodeTypeException;
 
 public record Code(
