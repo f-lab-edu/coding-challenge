@@ -103,19 +103,19 @@
 
 ###### Code
 
-* [unknown] C24 `test Code` : 코드를 생성한다.
+* [done] C24 `test Code` : 코드를 생성한다.
 
     * 코드 타입(`Lang`)와 코드(`Code`)를 입력받아 코드를 생성한다.
 
     * 생성할 코드 타입(`Lang`)은 `Java11`, `Python3` 둘 중 하나의 정보를 가진다.
 
-* [unknown] C25 `test Code` : 코드를 생성할 때, 코드 타입(`Lang`)이 없으면 `InvalidCodeTypeException` 예외가 발생한다.
+* [done] C25 `test Code` : 코드를 생성할 때, 코드 타입(`Lang`)이 없으면 `InvalidCodeTypeException` 예외가 발생한다.
 
     * 코드 타입(`InvalidLang`)과 코드(`Code`)를 입력받는다.
 
     * 코드 타입(`Lang`)을 검증할 때, 코드 타입(`Lang`)이 없으면 `InvalidCodeTypeException` 예외가 발생한다.
 
-* [unknown] C26 `test Code` : 코드를 생성할 때, 코드(`Code`)가 없거나 비어있으면 `InvalidCodeException` 예외가 발생한다.
+* [done] C26 `test Code` : 코드를 생성할 때, 코드(`Code`)가 없거나 비어있으면 `InvalidCodeException` 예외가 발생한다.
 
     * 코드 타입(`Lang`)과 코드(`InvalidCode`)를 입력받는다.
 
