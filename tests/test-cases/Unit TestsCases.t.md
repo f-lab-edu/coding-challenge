@@ -100,12 +100,10 @@
 * 28 `test ExecutionResult` : 테스트 결과를 생성할 때, 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
     * 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
 
-* 29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가
-  발생한다.
+* 29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
     * 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
-* 30 `test ExecutionResult` : 테스트 결과를 생성할 때, 사용자 식별자(`UserId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가
-  발생한다.
+* 30 `test ExecutionResult` : 테스트 결과를 생성할 때, 사용자 식별자(`UserId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
 ##### SucceededResult
 
@@ -113,17 +111,9 @@
     * 테스트 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `true`이다.
     * 총 실행 시간(`TotalExecutionTime`), 사용한 메모리 평균치 정보(`AverageUsedMemeory`)를 입력받아 성공한 테스트 결과를 생성한다.
 
-* 32 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은
-  음수면 `InvalidSucceededResultException` 예외가 발생한다.
+* 33 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은 없거나 음수면 `InvalidSucceededResultException` 예외가 발생한다.
 
-* 33 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 총 실행 시간(`TotalExecutionTime`)은 없거나
-  비어있으면 `InvalidSucceededResultException` 예외가 발생한다.
-
-* 34 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는
-  음수면 `InvalidSucceededResultException` 예외가 발생한다.
-
-* 35 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는 없거나
-  비어있으면 `InvalidSucceededResultException` 예외가 발생한다.
+* 35 `test SucceededResult` : 성공한 테스트 결과를 생성할 때, 사용한 메모리 평균치 정보(`AverageUsedMemeory`)는 없거나 음수면 `InvalidSucceededResultException` 예외가 발생한다.
 
 ##### FailedResult
 
