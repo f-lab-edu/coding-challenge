@@ -29,8 +29,8 @@ class CodeTest extends Specification {
 
         where:
         lang    | code
-        JAVA11  | JAVA_CODE
-        PYTHON3 | PYTHON_CODE
+        Lang.JAVA11  | JAVA_CODE
+        Lang.PYTHON3 | PYTHON_CODE
     }
 
     //C25
@@ -54,6 +54,6 @@ class CodeTest extends Specification {
         thrown(InvalidCodeTypeException)
 
         where:
-        lang << [JAVA11, PYTHON3]
+        lang << [Lang.JAVA11, Lang.PYTHON3]
     }
 }

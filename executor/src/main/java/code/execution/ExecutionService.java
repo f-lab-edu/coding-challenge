@@ -16,6 +16,7 @@ import code.dto.Code;
 import code.dto.ExecutionRequest;
 import code.dto.ExecutionResponse;
 import code.dto.FailedTestResult;
+import code.dto.Lang;
 import code.dto.SucceededTestResult;
 import code.dto.TestResult;
 import code.exception.ExecutionException;
@@ -101,20 +102,20 @@ public class ExecutionService {
 
     private static FailedResult getFailedResult(String memberId, String questionId, ExecutionRequest request,
                                                 FailedTestResult testResult) {
-        return new FailedResult(questionId, memberId, request.code(), request.lang(), false,
-                                LocalDateTime.now(), testResult.getCause(), testResult.getMessage());
+        return new FailedResult(questionId, memberId, new Code(Lang.valueOf(request.lang()), request.code()),
+                                false, LocalDateTime.now(), testResult.getCause(), testResult.getMessage());
     }
 
     private static SucceededResult getSucceededResult(String memberId, String questionId,
                                                       ExecutionRequest request,
                                                       SucceededTestResult testResult) {
-        return new SucceededResult(questionId, memberId, request.code(), request.lang(), true,
-                                   LocalDateTime.now(), testResult.getTotalExecutionTime(),
+        return new SucceededResult(questionId, memberId, new Code(Lang.valueOf(request.lang()), request.code()),
+                                   true, LocalDateTime.now(), testResult.getTotalExecutionTime(),
                                    testResult.getAverageMemoryUsage()
         );
     }
 
     private Mono<TestResult> executeCode(ExecutionRequest request, Question question) {
-        return executorService.executeCode(new Code(request.lang(), request.code()), question.getTestCases());
+        return executorService.executeCode(new Code(Lang.JAVA11, request.code()), question.getTestCases());
     }
 }

@@ -3,12 +3,12 @@ package code.dto;
 import code.exception.InvalidCodeTypeException;
 
 public record Code(
-        String lang,
+        Lang lang,
         String code
 ) {
 
     public Code {
-        if (lang == null || lang.isBlank()) {
+        if (lang == null) {
             throw InvalidCodeTypeException.invalidLang();
         }
 

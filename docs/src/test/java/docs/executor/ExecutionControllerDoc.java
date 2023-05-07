@@ -205,7 +205,7 @@ final class ExecutionControllerDoc extends ExecutorDocumentation {
 
     private void post__executeCode() throws JsonProcessingException {
         var contents = new HashMap<String, String>();
-        contents.put("lang", "java");
+        contents.put("lang", "JAVA11");
         contents.put("code", """
                 public class Main {
                     public static void main(String[] args) {
@@ -216,7 +216,7 @@ final class ExecutionControllerDoc extends ExecutorDocumentation {
 
         var contentsString = objectMapper.writeValueAsString(contents);
         var requestFieldDescriptors = new FieldDescriptor[] {
-                fieldWithPath("lang").description("사용자가 작성한 코드의 타입. `Java11`과 `Python3` 중 하나의 정보를 가진다."),
+                fieldWithPath("lang").description("사용자가 작성한 코드의 타입. `JAVA11`과 `PYTHON3` 중 하나의 정보를 가진다."),
                 fieldWithPath("code").description("사용자가 작성한 코드. 비어있을 수 없다.")
         };
 

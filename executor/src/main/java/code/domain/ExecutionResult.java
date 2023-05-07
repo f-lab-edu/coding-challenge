@@ -2,6 +2,7 @@ package code.domain;
 
 import java.time.LocalDateTime;
 
+import code.dto.Code;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,8 +21,8 @@ public class ExecutionResult {
     private final String questionId;
     @ToString.Include
     private final String userId;
-    private final String code;
-    private final String lang;
+    @ToString.Include
+    private final Code code;
     @ToString.Include
     private final Boolean isSucceed;
     @ToString.Include
