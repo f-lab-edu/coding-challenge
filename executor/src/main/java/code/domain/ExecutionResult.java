@@ -12,7 +12,6 @@ import lombok.ToString;
 @Getter
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@RequiredArgsConstructor(access = AccessLevel.PACKAGE)
 public class ExecutionResult {
     @EqualsAndHashCode.Include
     @ToString.Include
@@ -27,4 +26,31 @@ public class ExecutionResult {
     private final Boolean isSucceed;
     @ToString.Include
     private final LocalDateTime createdAt;
+
+    public ExecutionResult(String id, String questionId, String userId, Code code, Boolean isSucceed,
+                           LocalDateTime createdAt) {
+        if (code == null) {
+            throw new IllegalArgumentException("code must not be null");
+        }
+
+        if (questionId == null) {
+            throw new IllegalArgumentException("questionId must not be null");
+        }
+
+        if (userId == null) {
+            throw new IllegalArgumentException("userId must not be null");
+        }
+
+        this.id = id;
+        this.questionId = questionId;
+        this.userId = userId;
+        this.code = code;
+        this.isSucceed = isSucceed;
+        this.createdAt = createdAt;
+    }
+
+    ExecutionResult(String questionId, String userId, Code code, Boolean isSucceed,
+                    LocalDateTime createdAt) {
+        this(null, questionId, userId, code, isSucceed, createdAt);
+    }
 }

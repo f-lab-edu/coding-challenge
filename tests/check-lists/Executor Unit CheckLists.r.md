@@ -123,25 +123,23 @@
 
 ###### ExecutionResult
 
-* [unknown] C27 `test ExecutionResult` : 테스트 결과를 생성한다.
+* [done] C27 `test ExecutionResult` : 테스트 결과를 생성한다.
 
     * 결과 식별자(`Id`), 사용자의 식별자(`UserId`), 문제 식별자(`QuestionId`), 코드 타입(`Lang`), 코드 정보(`Code`), 사용자 식별자(`UserId`),
       문제 식별자(`QuestionId`), 성공 여부 정보(`IsSucceed`)를 가진다.
 
-* [unknown] C28 `test ExecutionResult` : 테스트 결과를 생성할 때, 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
+* [done] C28 `test ExecutionResult` : 테스트 결과를 생성할 때, 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
 
     * 코드(`Code`)가 없으면 `IllegalArgumentException` 예외가 발생한다.
 
-* [unknown] C29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나
+* [done] C29 `test ExecutionResult` : 테스트 결과를 생성할 때, 문제 식별자(`QuestionId`)가 없거나
   비어있으면 `IllegalArgumentException`
   예외가 발생한다.
 
     * 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
-* [unknown] C30 `test ExecutionResult` : 테스트 결과를 생성할 때, 솔루션 식별자(`SolutionId`)가 없거나
+* [done] C30 `test ExecutionResult` : 테스트 결과를 생성할 때, 사용자 식별자(`UserId`)가 없거나
   비어있으면 `IllegalArgumentException` 예외가 발생한다.
-
-    * 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
 ###### SucceededResult
 

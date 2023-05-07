@@ -104,9 +104,8 @@
   발생한다.
     * 문제 식별자(`QuestionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
-* 30 `test ExecutionResult` : 테스트 결과를 생성할 때, 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가
+* 30 `test ExecutionResult` : 테스트 결과를 생성할 때, 사용자 식별자(`UserId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가
   발생한다.
-    * 솔루션 식별자(`SolutionId`)가 없거나 비어있으면 `IllegalArgumentException` 예외가 발생한다.
 
 ##### SucceededResult
 
