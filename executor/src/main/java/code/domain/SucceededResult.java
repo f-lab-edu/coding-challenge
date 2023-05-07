@@ -3,6 +3,7 @@ package code.domain;
 import java.time.LocalDateTime;
 
 import code.dto.Code;
+import code.exception.InvalidSucceededResultException;
 import lombok.Getter;
 import lombok.ToString;
 

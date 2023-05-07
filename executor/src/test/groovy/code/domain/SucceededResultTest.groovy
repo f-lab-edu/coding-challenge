@@ -1,6 +1,7 @@
 package code.domain
 
 import code.dto.Code
+import code.exception.InvalidSucceededResultException
 import spock.lang.Specification
 
 import java.time.LocalDateTime

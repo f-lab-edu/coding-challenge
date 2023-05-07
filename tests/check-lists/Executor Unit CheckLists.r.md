@@ -153,7 +153,7 @@
 
 ###### FailedResult
 
-* [unknown] C36 `test FailedResult` : 실패한 테스트 결과를 생성한다.
+* [done] C36 `test FailedResult` : 실패한 테스트 결과를 생성한다.
 
     * 테스트 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
 
@@ -161,11 +161,9 @@
 
     * 실패 원인은 `DIFFERENT`, `ERROR` 중 하나의 정보를 가진다.
 
-* [unknown] C37 `test FailedResult` : 실패한 테스트 결과를 생성할 때, 실패 원인(`Cause`)이 없으면 `InvalidFailedResultException`
-  예외가 발생한다.
+* [done] C37 `test FailedResult` : 실패한 테스트 결과를 생성할 때, 실패 원인(`Cause`)이 없으면 `InvalidFailedResultException` 예외가 발생한다.
 
-* [unknown] C38 `test FailedResult` : 실패한 테스트 결과를 생성할 때, 실패 정보(`Message`)가 없거나
-  비어있으면 `InvalidFailedResultException` 예외가 발생한다.
+* [done] C38 `test FailedResult` : 실패한 테스트 결과를 생성할 때, 실패 정보(`Message`)가 없거나 비어있으면 `InvalidFailedResultException` 예외가 발생한다.
 
 ###### TestCases
 

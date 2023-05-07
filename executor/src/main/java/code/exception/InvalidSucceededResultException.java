@@ -1,4 +1,4 @@
-package code.domain;
+package code.exception;
 
 public final class InvalidSucceededResultException extends RuntimeException {
     private InvalidSucceededResultException(String message) {
