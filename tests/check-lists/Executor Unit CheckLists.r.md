@@ -189,7 +189,7 @@
 
 ##### Business layer
 
-* [unknown] C47 `test executeCode` : 코드(`Code`)를 실행한다.
+* [done] C47 `test executeCode` : 코드(`Code`)를 실행한다.
 
     * 테스트 케이스(`TestCases`)를 입력해 코드(`Code`)를 실행한다.
 
