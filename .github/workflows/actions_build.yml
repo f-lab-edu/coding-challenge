@@ -15,7 +15,6 @@ on:
       - opened
       - reopened
       - closed
-  push:
 
 jobs:
   functional_tests_and_integration_tests:
