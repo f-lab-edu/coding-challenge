@@ -1,6 +1,6 @@
 package code.domain
 
-import code.dto.Code
+
 import code.exception.InvalidSucceededResultException
 import spock.lang.Specification
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 class SucceededResultTest extends Specification {
     def static final QUESTION_ID = UUID.randomUUID().toString()
     def static final USER_ID = UUID.randomUUID().toString()
-    def static final CODE = new Code(Lang.PYTHON3, """
+    def static final CODE = new UserCode(Lang.PYTHON3, """
                 print("Hello World!")
         """)
 
@@ -19,7 +19,7 @@ class SucceededResultTest extends Specification {
         def result = new SucceededResult(QUESTION_ID, USER_ID, CODE, true, LocalDateTime.now(),
                 39020, 3120353273)
         then:
-        assert result.getCode() == CODE
+        assert result.getUserCode() == CODE
         assert result.getQuestionId() == QUESTION_ID
         assert result.getUserId() == USER_ID
         assert result.isSucceed == true

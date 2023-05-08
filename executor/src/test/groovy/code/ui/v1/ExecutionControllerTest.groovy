@@ -1,8 +1,8 @@
 package code.ui.v1
 
-import code.execution.ExecutionService
 import code.dto.ExecutionRequest
 import code.dto.ExecutionResponse
+import code.execution.ExecutionService
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.junit.jupiter.MockitoExtension
 import reactor.core.publisher.Flux
@@ -59,9 +59,9 @@ class ExecutionControllerTest extends Specification {
 
         then:
         StepVerifier.create(executionController.findResults(questionId))
-        .consumeNextWith ({ collectionModel ->
-            collectionModel.content.size() == 3
-        }).verifyComplete()
+                .consumeNextWith({ collectionModel ->
+                    collectionModel.content.size() == 3
+                }).verifyComplete()
     }
 
     //C11

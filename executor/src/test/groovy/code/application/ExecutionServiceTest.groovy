@@ -23,7 +23,7 @@ class ExecutionServiceTest extends Specification {
                     }
                 """
     def JAVA11 = "JAVA11"
-    def CODE = new Code(Lang.JAVA11, JAVA_CODE)
+    def CODE = new UserCode(Lang.JAVA11, JAVA_CODE)
     def MEMBER_ID = "this-is-user-id"
     def QUESTION_ID = UUID.randomUUID().toString()
 

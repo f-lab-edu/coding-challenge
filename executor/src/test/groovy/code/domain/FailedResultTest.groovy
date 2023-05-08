@@ -1,6 +1,6 @@
 package code.domain
 
-import code.dto.Code
+
 import code.exception.InvalidFailedResultException
 import spock.lang.Specification
 
@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 class FailedResultTest extends Specification {
     def static final QUESTION_ID = UUID.randomUUID().toString()
     def static final USER_ID = UUID.randomUUID().toString()
-    def static final CODE = new Code(Lang.PYTHON3, """
+    def static final CODE = new UserCode(Lang.PYTHON3, """
                 print("Hello World!")
         """)
 
@@ -20,7 +20,7 @@ class FailedResultTest extends Specification {
                 Cause.WRONG_ANSWER, "정답이 틀렸습니다.");
 
         then:
-        assert result.getCode() == CODE
+        assert result.getUserCode() == CODE
         assert result.getQuestionId() == QUESTION_ID
         assert result.getUserId() == USER_ID
         assert result.isSucceed == false

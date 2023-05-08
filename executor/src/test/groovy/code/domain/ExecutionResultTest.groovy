@@ -1,6 +1,6 @@
 package code.domain
 
-import code.dto.Code
+
 import spock.lang.Specification
 
 import java.time.LocalDateTime
@@ -8,7 +8,7 @@ import java.time.LocalDateTime
 class ExecutionResultTest extends Specification {
     def static final QUESTION_ID = UUID.randomUUID().toString()
     def static final USER_ID = UUID.randomUUID().toString()
-    def static final CODE = new Code(Lang.PYTHON3, """
+    def static final CODE = new UserCode(Lang.PYTHON3, """
                 print("Hello World!")
         """)
 
@@ -19,7 +19,7 @@ class ExecutionResultTest extends Specification {
         def executionResult = new ExecutionResult(QUESTION_ID, USER_ID, CODE, true, LocalDateTime.now());
 
         then:
-        assert executionResult.getCode() == CODE
+        assert executionResult.getUserCode() == CODE
         assert executionResult.getQuestionId() == QUESTION_ID
         assert executionResult.getUserId() == USER_ID
         assert executionResult.getIsSucceed()

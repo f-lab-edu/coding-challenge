@@ -1,14 +1,13 @@
-package code.dto;
+package code.domain;
 
-import code.domain.Lang;
 import code.exception.InvalidCodeTypeException;
 
-public record Code(
+public record UserCode(
         Lang lang,
         String code
 ) {
 
-    public Code {
+    public UserCode {
         if (lang == null) {
             throw InvalidCodeTypeException.invalidLang();
         }

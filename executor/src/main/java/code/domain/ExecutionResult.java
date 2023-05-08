@@ -2,11 +2,8 @@ package code.domain;
 
 import java.time.LocalDateTime;
 
-import code.dto.Code;
-import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @Getter
@@ -21,15 +18,15 @@ public class ExecutionResult {
     @ToString.Include
     private final String userId;
     @ToString.Include
-    private final Code code;
+    private final UserCode userCode;
     @ToString.Include
     private final Boolean isSucceed;
     @ToString.Include
     private final LocalDateTime createdAt;
 
-    public ExecutionResult(String id, String questionId, String userId, Code code, Boolean isSucceed,
+    public ExecutionResult(String id, String questionId, String userId, UserCode userCode, Boolean isSucceed,
                            LocalDateTime createdAt) {
-        if (code == null) {
+        if (userCode == null) {
             throw new IllegalArgumentException("code must not be null");
         }
 
@@ -44,13 +41,13 @@ public class ExecutionResult {
         this.id = id;
         this.questionId = questionId;
         this.userId = userId;
-        this.code = code;
+        this.userCode = userCode;
         this.isSucceed = isSucceed;
         this.createdAt = createdAt;
     }
 
-    ExecutionResult(String questionId, String userId, Code code, Boolean isSucceed,
+    ExecutionResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
                     LocalDateTime createdAt) {
-        this(null, questionId, userId, code, isSucceed, createdAt);
+        this(null, questionId, userId, userCode, isSucceed, createdAt);
     }
 }

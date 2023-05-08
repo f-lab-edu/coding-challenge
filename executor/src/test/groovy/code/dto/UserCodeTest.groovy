@@ -1,10 +1,11 @@
 package code.dto
 
 import code.domain.Lang
+import code.domain.UserCode
 import code.exception.InvalidCodeTypeException
 import spock.lang.Specification
 
-class CodeTest extends Specification {
+class UserCodeTest extends Specification {
 
     def static final JAVA11 = "JAVA11"
     def static final JAVA_CODE = """
@@ -22,22 +23,22 @@ class CodeTest extends Specification {
     //C24
     def "코드를 생성한다"() {
         when:
-        def userCode = new Code(lang, code)
+        def userCode = new UserCode(lang, code)
 
         then:
         assert userCode.lang() == lang
         assert userCode.code() == code
 
         where:
-        lang    | code
-        Lang.JAVA11 | JAVA_CODE
+        lang         | code
+        Lang.JAVA11  | JAVA_CODE
         Lang.PYTHON3 | PYTHON_CODE
     }
 
     //C25
     def "코드를 생성할 때, 코드 타입(`Lang`)이 없으면 `InvalidCodeTypeException` 예외가 발생한다"() {
         when:
-        new Code(null, code)
+        new UserCode(null, code)
 
         then:
         thrown(InvalidCodeTypeException)
@@ -49,7 +50,7 @@ class CodeTest extends Specification {
     //C26
     def "코드를 생성할 때, 코드(`code`)가 없으면 `InvalidCodeTypeException` 예외가 발생한다"() {
         when:
-        new Code(lang, null)
+        new UserCode(lang, null)
 
         then:
         thrown(InvalidCodeTypeException)

@@ -2,7 +2,6 @@ package code.domain;
 
 import java.time.LocalDateTime;
 
-import code.dto.Code;
 import code.exception.InvalidFailedResultException;
 import lombok.Getter;
 import lombok.ToString;
@@ -16,9 +15,9 @@ public final class FailedResult extends ExecutionResult {
     @ToString.Include
     private final String message;
 
-    public FailedResult(String questionId, String userId, Code code, Boolean isSucceed,
+    public FailedResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
                         LocalDateTime createdAt, Cause cause, String message) {
-        super(questionId, userId, code, isSucceed, createdAt);
+        super(questionId, userId, userCode, isSucceed, createdAt);
 
         if (cause == null) {
             throw InvalidFailedResultException.invalidCause();

@@ -2,7 +2,6 @@ package code.domain;
 
 import java.time.LocalDateTime;
 
-import code.dto.Code;
 import code.exception.InvalidSucceededResultException;
 import lombok.Getter;
 import lombok.ToString;
@@ -15,9 +14,9 @@ public final class SucceededResult extends ExecutionResult {
     @ToString.Include
     private final Long averageMemoryUsage;
 
-    public SucceededResult(String questionId, String userId, Code code, Boolean isSucceed,
+    public SucceededResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
                            LocalDateTime createdAt, Long totalExecutionTime, Long averageMemoryUsage) {
-        super(questionId, userId, code, isSucceed, createdAt);
+        super(questionId, userId, userCode, isSucceed, createdAt);
         ensureTotalExecutionTime(totalExecutionTime);
         ensureAverageMemoryUsage(averageMemoryUsage);
         this.totalExecutionTime = totalExecutionTime;
