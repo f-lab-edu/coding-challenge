@@ -189,7 +189,7 @@
 
 ##### Business layer
 
-* [done] C47 `test executeCode` : 코드(`Code`)를 실행한다.
+* [done] 44 `test executeCode` : 코드(`Code`)를 실행한다.
 
     * 테스트 케이스(`TestCases`)를 입력해 코드(`Code`)를 실행한다.
 
@@ -199,21 +199,21 @@
 
 ###### Code
 
-* [unknown] C44 `test Code` : 코드(`Code`)를 생성한다.
+* [done] 45 `test Code` : 코드(`Code`)를 생성한다.
 
     * 코드(`Code`)와 타입 정보(`Lang`)을 입력해 코드를 생성한다.
 
-* [unknown] C45 `test execute` : 코드를 여러 번 실항한다.
+* [unknown] 46 `test execute` : 코드를 여러 번 실항한다.
 
     * 코드를 여러 번 실행해 실행 결과(`ExecutionResult`)를 반환한다.
 
-* [unknown] C46 `test execute` : 코드를 실행한다.
+* [done] 47 `test execute` : 입력 값이 없는 코드를 실행한다.
 
-    * 코드를 실행해 실행 결과(`ExecutionResult`)를 반환한다.
+* [unknown] 32 `test execute` : 입력 값이 있는 코드를 실행한다.
 
 ###### SucceededTestResult
 
-* [unknown] C47 `test SucceededTestResult` : 성공한 실행 결과를 생성한다.
+* [done] 48 `test SucceededTestResult` : 성공한 실행 결과를 생성한다.
 
     * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `true`이다.
 
@@ -221,15 +221,15 @@
 
 ###### FailedTestResult
 
-* [unknown] C48 `test FailedTestResult` : 실패 원인이 `DIFFERENT`인 실행 결과를 생성한다.
+* [done] 49 `test FailedTestResult` : 실패 원인이 `WRONG_ANSWER`인 실행 결과를 생성한다.
 
     * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
 
-    * `DIFFERENT`일 때 실패 정보는 실제 값과 예상 값의 차이 정보가 포함된다.
+    * `WRONG_ANSWER`일 때 실패 정보는 실제 값과 예상 값의 차이 정보가 포함된다.
 
     * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 실행 결과를 생성한다.
 
-* [unknown] C49 `test FailedTestResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
+* [unknown] 50 `test FailedTestResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
 
     * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
 

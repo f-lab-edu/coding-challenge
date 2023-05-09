@@ -4,12 +4,12 @@ import lombok.Getter;
 
 @Getter
 public final class SucceededTestResult extends TestResult {
-    private final Long totalExecutionTime;
-    private final Long averageMemoryUsage;
+    private final Long executionTime;
+    private final Long memoryUsage;
 
-    public SucceededTestResult(Boolean isSucceeded, Long totalExecutionTime, Long averageMemoryUsage) {
+    public SucceededTestResult(Boolean isSucceeded, Long executionTime, Long memoryUsage) {
         super(isSucceeded);
-        this.totalExecutionTime = totalExecutionTime;
-        this.averageMemoryUsage = averageMemoryUsage;
+        this.executionTime = executionTime;
+        this.memoryUsage = memoryUsage;
     }
 }

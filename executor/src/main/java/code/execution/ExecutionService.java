@@ -112,8 +112,8 @@ public class ExecutionService {
                                                       SucceededTestResult testResult) {
         return new SucceededResult(questionId, memberId,
                                    new UserCode(Lang.valueOf(request.lang()), request.code()),
-                                   true, LocalDateTime.now(), testResult.getTotalExecutionTime(),
-                                   testResult.getAverageMemoryUsage()
+                                   true, LocalDateTime.now(), testResult.getExecutionTime(),
+                                   testResult.getMemoryUsage()
         );
     }
 
