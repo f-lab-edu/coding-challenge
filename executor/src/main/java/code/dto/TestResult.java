@@ -14,13 +14,9 @@ public class TestResult {
         this.isSucceeded = isSucceeded;
     }
 
-    public static TestResult of(String message, String output) {
-        if (isException(message)) {
-            return new FailedTestResult(false, Cause.ERROR, extractCause(message));
-        }
-
+    public static TestResult of(String message, String output, Long executionTime, Long memoryUsage) {
         if (isCorrect(message, output)) {
-            return new SucceededTestResult(true, extractExecutionTime(message), extractMemoryUsage(message));
+            return new SucceededTestResult(true, executionTime, memoryUsage);
         }
 
         return new FailedTestResult(false, Cause.WRONG_ANSWER, "WRONG_ANSWER");
@@ -49,10 +45,6 @@ public class TestResult {
                 nowResult.getExecutionTime() + nextSucceededResult.getExecutionTime(),
                 (nowResult.getMemoryUsage() + nextSucceededResult.getMemoryUsage())
         );
-    }
-
-    private static boolean isException(String message) {
-        return message.toUpperCase().contains(EXCEPTION) || message.toUpperCase().contains(ERROR);
     }
 
     private static boolean isCorrect(String message, String output) {

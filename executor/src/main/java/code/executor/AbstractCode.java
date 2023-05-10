@@ -11,7 +11,6 @@ import java.util.UUID;
 import code.domain.Cause;
 import code.domain.Lang;
 import code.dto.FailedTestResult;
-import code.dto.TestCase;
 import code.dto.TestCases;
 import code.dto.TestResult;
 import code.exception.ThrowerResultExecution;
@@ -41,7 +40,8 @@ public abstract class AbstractCode {
     public Mono<TestResult> execute(TestCases testCases) {
         return Flux.fromIterable(testCases.testCases())
                    .flatMap(testCase -> {
-                       final var testResult = execute(testCase);
+                       final var testResult = execute(testCase.input(), testCase.output());
+
                        if (testResult instanceof FailedTestResult failedTestResult && failedTestResult
                                .getCause().equals(Cause.WRONG_ANSWER)) {
                            return Mono.error(new WrongResultException(failedTestResult.getMessage()));
@@ -74,28 +74,41 @@ public abstract class AbstractCode {
 
     protected abstract String getFilename(String uuid);
 
-    private TestResult execute(final TestCase testCase) {
-        final var message = execute(testCase.input());
-        return TestResult.of(message, testCase.output());
-    }
-
-    private String execute(@Nullable String input) {
+    private TestResult execute(@Nullable String input, String output) {
         try {
+            final var startTime = System.currentTimeMillis();
             final var commands = new String[] { "/bin/sh", "-c", getCommand(path) };
             final var exec = Runtime.getRuntime().exec(commands);
             Objects.requireNonNull(exec);
             input(input, exec);
+
+            final var usedMemory = getUsedMemory(exec);
+            final var message = getOutputMessage(exec);
+
             exec.waitFor();
+
             if (exec.exitValue() == 0) {
-                return getOutputMessage(exec);
+                final var executeTime = System.currentTimeMillis() - startTime;
+                return TestResult.of(message, output, executeTime, usedMemory);
             }
 
-            return getErrorMessage(exec);
+            return new FailedTestResult(false, Cause.ERROR, getErrorMessage(exec));
         } catch (IOException e) {
             throw new RuntimeException("프로그램 인스턴스화 실패했습니다.");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private static Long getUsedMemory(Process exec) throws IOException {
+        final var commands = new String[] { "/bin/sh", "-c", "ps -o rss -p " + exec.pid() };
+        var process = Runtime.getRuntime().exec(commands);
+        var message = getOutputMessage(process);
+        var strings = message.split("\n");
+        if (strings.length == 2) {
+            return Long.parseLong(strings[1].trim());
+        }
+        return 0L;
     }
 
     private void input(String input, Process exec) {
@@ -124,7 +137,7 @@ public abstract class AbstractCode {
         }
     }
 
-    private String getOutputMessage(Process exec) {
+    private static String getOutputMessage(Process exec) {
         final var builder = new StringBuilder();
         try (var reader = exec.inputReader()) {
             String line;
