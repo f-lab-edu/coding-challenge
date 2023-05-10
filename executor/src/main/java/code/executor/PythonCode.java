@@ -2,7 +2,7 @@ package code.executor;
 
 import java.nio.file.Path;
 
-public final class PythonCode extends Code {
+public final class PythonCode extends AbstractCode {
 
     public PythonCode(String uuid, String code) {
         super(uuid, code);

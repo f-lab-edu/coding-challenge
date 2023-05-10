@@ -36,7 +36,7 @@ class CodeTest extends Specification {
     //C45
     def "자바 코드와 파이썬 코드를 생성한다"() {
         when:
-        def userCode = Code.of(lang, code);
+        def userCode = AbstractCode.of(lang, code);
 
         then:
         assert userCode.class == classType
@@ -50,7 +50,7 @@ class CodeTest extends Specification {
     //C47
     def "코드를 실행해 성공한 결과를 반환한다"() {
         given:
-        def userCode = Code.of(lang, code);
+        def userCode = AbstractCode.of(lang, code);
         def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE))
 
         expect:
@@ -69,7 +69,7 @@ class CodeTest extends Specification {
     //C47
     def "코드를 실행해 실패한 결과를 반환한다"() {
         given:
-        def userCode = Code.of(lang, code);
+        def userCode = AbstractCode.of(lang, code);
         def wrongTestCases = new TestCases(Arrays.asList(WRONG_TESTCASE))
 
         expect:
@@ -89,7 +89,7 @@ class CodeTest extends Specification {
     // C46
     def "여러 개의 성공하는 테스트 케이스를 실행한다"() {
         given:
-        def userCode = Code.of(lang, code);
+        def userCode = AbstractCode.of(lang, code);
         def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE, CORRECT_TESTCASE))
 
         expect:
@@ -108,7 +108,7 @@ class CodeTest extends Specification {
     // C46
     def "일부 실패하는 테스트 케이스를 넣어 실행한다"() {
         given:
-        def userCode = Code.of(lang, code);
+        def userCode = AbstractCode.of(lang, code);
         def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE, WRONG_TESTCASE))
 
         expect:
@@ -128,7 +128,7 @@ class CodeTest extends Specification {
     // C32
     def "입력 값을 받아 결과 값을 반환한다"() {
         given:
-        def userCode = Code.of(lang, code);
+        def userCode = AbstractCode.of(lang, code);
         def testCases = new TestCases(Arrays.asList(new TestCase("Hello World!", "Hello World!")))
 
         expect:

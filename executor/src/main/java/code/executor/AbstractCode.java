@@ -19,15 +19,15 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-public abstract class Code {
+public abstract class AbstractCode {
     private final Path path;
     protected static final String DIRECTORY = "/Users/keonchanglee/Desktop/codingtest/";
 
-    public Code(String uuid, String code) {
+    public AbstractCode(String uuid, String code) {
         this.path = initializeFile(uuid, code);
     }
 
-    public static Code of(Lang lang, String code) {
+    public static AbstractCode of(Lang lang, String code) {
         return switch (lang) {
             case JAVA11 -> new JavaCode(UUID.randomUUID().toString(), code);
             case PYTHON3 -> new PythonCode(UUID.randomUUID().toString(), code);

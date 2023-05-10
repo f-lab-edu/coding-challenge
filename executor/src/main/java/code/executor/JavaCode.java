@@ -2,7 +2,7 @@ package code.executor;
 
 import java.nio.file.Path;
 
-public final class JavaCode extends Code {
+public final class JavaCode extends AbstractCode {
     public JavaCode(String uuid, String code) {
         super(uuid, code);
     }

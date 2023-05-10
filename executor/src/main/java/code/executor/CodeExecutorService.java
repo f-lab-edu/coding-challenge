@@ -12,6 +12,6 @@ import reactor.core.publisher.Mono;
 public class CodeExecutorService implements ExecutorService {
     @Override
     public Mono<TestResult> executeCode(UserCode userCode, TestCases testCases) {
-        return Code.of(userCode.lang(), userCode.code()).execute(testCases);
+        return AbstractCode.of(userCode.lang(), userCode.code()).execute(testCases);
     }
 }
