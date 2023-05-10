@@ -17,6 +17,13 @@ class CodeTest extends Specification {
             }
         }
         """
+    private static final String ERROR_JAVA_CODE = """
+        public class Main {
+            public static void main(String[] args) {
+                System.out.println(0/0);
+            }
+        }
+        """
     private static final String JAVA_CODE_FOR_INPUT = """
         import java.io.IOException;
         import java.io.BufferedReader;
@@ -29,6 +36,7 @@ class CodeTest extends Specification {
         }
         """
     private static final String PYTHON_CODE = "print(\"Hello World!\")"
+    private static final String ERROR_PYTHON_CODE = "print(0/0)"
     private static final String PYTHON_CODE_FOR_INPUT = "import sys\nprint(sys.stdin.readline())"
     private static final TestCase WRONG_TESTCASE = new TestCase(null, "Hello World")
     private static final TestCase CORRECT_TESTCASE = new TestCase(null, "Hello World!")
@@ -84,6 +92,26 @@ class CodeTest extends Specification {
         lang         | code        | classType
         Lang.PYTHON3 | PYTHON_CODE | PythonCode.class
         Lang.JAVA11  | JAVA_CODE   | JavaCode.class
+    }
+
+    //C48
+    def "코드를 실행할 때 예외가 발생해도 결과를 반환한다"() {
+        given:
+        def userCode = AbstractCode.of(lang, code);
+        def wrongTestCases = new TestCases(Arrays.asList(CORRECT_TESTCASE))
+
+        expect:
+        StepVerifier.create(userCode.execute(wrongTestCases))
+                .consumeNextWith({ result ->
+                    assert result instanceof FailedTestResult
+                    assert result.isSucceeded() == false
+                    assert ((FailedTestResult) result).getCause() == Cause.ERROR
+                }).verifyComplete()
+
+        where:
+        lang         | code        | classType
+        Lang.PYTHON3 | ERROR_PYTHON_CODE | PythonCode.class
+        Lang.JAVA11  | ERROR_JAVA_CODE   | JavaCode.class
     }
 
     // C46

@@ -1,8 +1,6 @@
 package code.executor;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -82,16 +80,25 @@ public abstract class AbstractCode {
     }
 
     private String execute(@Nullable String input) {
-        final var commands = new String[] { "/bin/sh", "-c", getCommand(path) };
-        Process exec;
         try {
-            exec = Runtime.getRuntime().exec(commands);
+            final var commands = new String[] { "/bin/sh", "-c", getCommand(path) };
+            final var exec = Runtime.getRuntime().exec(commands);
+            Objects.requireNonNull(exec);
+            input(input, exec);
+            exec.waitFor();
+            if (exec.exitValue() == 0) {
+                return getOutputMessage(exec);
+            }
+
+            return getErrorMessage(exec);
         } catch (IOException e) {
             throw new RuntimeException("프로그램 인스턴스화 실패했습니다.");
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
+    }
 
-        Objects.requireNonNull(exec);
-
+    private void input(String input, Process exec) {
         if (input != null && !input.isBlank()) {
             try (var outputStream = exec.getOutputStream()) {
                 outputStream.write(input.getBytes(StandardCharsets.UTF_8));
@@ -100,9 +107,26 @@ public abstract class AbstractCode {
                 throw new RuntimeException("프로그램 입력에 실패했습니다.");
             }
         }
+    }
 
-        var builder = new StringBuilder();
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(exec.getInputStream()))) {
+    private String getErrorMessage(Process exec) {
+        final var builder = new StringBuilder();
+        try (var reader = exec.errorReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line).append('\n');
+            }
+            return builder.toString().trim();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } finally {
+            exec.destroy();
+        }
+    }
+
+    private String getOutputMessage(Process exec) {
+        final var builder = new StringBuilder();
+        try (var reader = exec.inputReader()) {
             String line;
             while ((line = reader.readLine()) != null) {
                 builder.append(line).append('\n');
@@ -110,14 +134,13 @@ public abstract class AbstractCode {
         } catch (IOException e) {
             throw new RuntimeException("출력 결과를 읽기 데 실패했습니다.");
         }
-
         return builder.toString().trim();
     }
 
     private Path initializeFile(String uuid, String code) {
-        var tmp = Paths.get(DIRECTORY).resolve(getFilename(uuid));
+        final var tmp = Paths.get(DIRECTORY).resolve(getFilename(uuid));
         if (Files.exists(tmp)) {
-            throw new IllegalArgumentException("이미 존재");
+            throw new IllegalArgumentException("이미 존재합니다.");
         }
 
         try (var writer = Files.newBufferedWriter(tmp)) {
@@ -129,5 +152,4 @@ public abstract class AbstractCode {
 
         return tmp;
     }
-
 }

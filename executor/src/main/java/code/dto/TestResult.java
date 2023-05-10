@@ -6,6 +6,8 @@ import java.util.Objects;
 import code.domain.Cause;
 
 public class TestResult {
+    private static final String EXCEPTION = "EXCEPTION";
+    private static final String ERROR = "ERROR";
     private final Boolean isSucceeded;
 
     TestResult(Boolean isSucceeded) {
@@ -29,7 +31,7 @@ public class TestResult {
     }
 
     public static TestResult extract(List<TestResult> results) {
-        var totalResult = (SucceededTestResult) results.stream().reduce(TestResult::extract).get();
+        final var totalResult = (SucceededTestResult) results.stream().reduce(TestResult::extract).get();
         return new SucceededTestResult(true, totalResult.getExecutionTime(),
                                        totalResult.getMemoryUsage() / results.size());
     }
@@ -39,8 +41,8 @@ public class TestResult {
             throw new IllegalArgumentException();
         }
 
-        SucceededTestResult nowResult = (SucceededTestResult) this;
-        SucceededTestResult nextSucceededResult = (SucceededTestResult) nextResult;
+        final var nowResult = (SucceededTestResult) this;
+        final var nextSucceededResult = (SucceededTestResult) nextResult;
 
         return new SucceededTestResult(
                 true,
@@ -50,7 +52,7 @@ public class TestResult {
     }
 
     private static boolean isException(String message) {
-        return message.contains("Exception");
+        return message.toUpperCase().contains(EXCEPTION) || message.toUpperCase().contains(ERROR);
     }
 
     private static boolean isCorrect(String message, String output) {
