@@ -24,6 +24,7 @@ import reactor.core.scheduler.Schedulers;
 @Slf4j
 public abstract class AbstractCode {
     private final Path path;
+    //TODO: change directory
     protected static final String DIRECTORY = "/Users/keonchanglee/Desktop/codingtest/";
 
     public AbstractCode(String uuid, String code) {
@@ -102,9 +103,9 @@ public abstract class AbstractCode {
 
     private static Long getUsedMemory(Process exec) throws IOException {
         final var commands = new String[] { "/bin/sh", "-c", "ps -o rss -p " + exec.pid() };
-        var process = Runtime.getRuntime().exec(commands);
-        var message = getOutputMessage(process);
-        var strings = message.split("\n");
+        final var process = Runtime.getRuntime().exec(commands);
+        final var message = getOutputMessage(process);
+        final var strings = message.split("\n");
         if (strings.length == 2) {
             return Long.parseLong(strings[1].trim());
         }
