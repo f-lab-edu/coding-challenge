@@ -15,39 +15,41 @@ import java.time.LocalDateTime
 
 class ExecutionServiceTest extends Specification {
 
-    def JAVA_CODE = """
+    def static final JAVA_CODE = """
                     public class Main {
                         public static void main(String[] args) {
                             System.out.println("Hello World!");
                         }
                     }
                 """
-    def JAVA11 = "JAVA11"
-    def CODE = new UserCode(Lang.JAVA11, JAVA_CODE)
-    def MEMBER_ID = "this-is-user-id"
-    def QUESTION_ID = UUID.randomUUID().toString()
+    private static final String JAVA11 = "JAVA11"
+    private static final String MEMBER_ID = "this-is-user-id"
+    private static final String QUESTION_ID = UUID.randomUUID().toString()
+    private static final UserCode CODE = new UserCode(Lang.JAVA11, JAVA_CODE)
+    private static final TestCases TEST_CASES = new TestCases(Arrays.asList(new TestCase("", "Hello World!")))
+    private static final ExecutionRequest REQUEST = new ExecutionRequest(JAVA_CODE, JAVA11)
 
-    def executorService = Mock(CodeExecutorService)
-    def memberRepository = Mock(MemberRepository)
-    def questionRepository = Mock(QuestionRepository)
-    def executionResultRepository = Mock(ExecutionResultRepository)
-    def executionService = new ExecutionService(executorService, memberRepository, questionRepository, executionResultRepository)
+    private final executorService = Mock(CodeExecutorService)
+    private final memberRepository = Mock(MemberRepository)
+    private final questionRepository = Mock(QuestionRepository)
+    private final executionResultRepository = Mock(ExecutionResultRepository)
+    private final executionService = new ExecutionService(executorService, memberRepository, questionRepository, executionResultRepository)
 
     //C14
     def "코드를 실행하고 성공한 실행 결과를 반환받는다"() {
         given:
-        def succeededResult = new SucceededResult(QUESTION_ID, MEMBER_ID, CODE, true, LocalDateTime.now(), 1000L, 234L)
+        def succeededResult = new SucceededResult(QUESTION_ID, MEMBER_ID, CODE, true, LocalDateTime.now(),
+                1000L, 234L)
         def succeededTestResult = new SucceededTestResult(true, 1000L, 234L)
 
         when:
         memberRepository.findById(MEMBER_ID) >> Mono.just(new Member(MEMBER_ID))
-        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, new TestCases(
-                Arrays.asList(new TestCase("", "Hello World!")))))
+        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, TEST_CASES))
         executorService.executeCode(_, _) >> Mono.just(succeededTestResult)
         executionResultRepository.save(_) >> Mono.just(succeededResult)
 
         then:
-        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, new ExecutionRequest(JAVA_CODE, JAVA11)))
+        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, REQUEST))
                 .consumeNextWith({ executionResult ->
                     assert executionResult.isSucceeded()
                 }).verifyComplete()
@@ -63,13 +65,12 @@ class ExecutionServiceTest extends Specification {
 
         when:
         memberRepository.findById(MEMBER_ID) >> Mono.just(new Member(MEMBER_ID))
-        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, new TestCases(
-                Arrays.asList(new TestCase("", "Hello World!")))))
+        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, TEST_CASES))
         executorService.executeCode(_, _) >> Mono.just(succeededTestResult)
         executionResultRepository.save(_) >> Mono.just(succeededResult)
 
         then:
-        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, new ExecutionRequest(JAVA_CODE, JAVA11)))
+        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, REQUEST))
                 .consumeNextWith({ executionResult ->
                     assert !executionResult.isSucceeded()
                 }).verifyComplete()
@@ -81,7 +82,7 @@ class ExecutionServiceTest extends Specification {
         memberRepository.findById(MEMBER_ID) >> Mono.empty()
 
         then:
-        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, new ExecutionRequest(JAVA_CODE, JAVA11)))
+        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, REQUEST))
                 .verifyError(NotFoundException.class)
     }
 
@@ -92,7 +93,7 @@ class ExecutionServiceTest extends Specification {
         questionRepository.findById(QUESTION_ID) >> Mono.empty()
 
         then:
-        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, new ExecutionRequest(JAVA_CODE, JAVA11)))
+        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, REQUEST))
                 .verifyError(NotFoundException.class)
     }
 
@@ -100,12 +101,11 @@ class ExecutionServiceTest extends Specification {
     def "코드를 실행할 때, `executionCode`에서 반환받은 데이터가 없다면 `NotFoundException` 예외가 발생한다"() {
         when:
         memberRepository.findById(MEMBER_ID) >> Mono.just(new Member(MEMBER_ID))
-        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, new TestCases(
-                Arrays.asList(new TestCase("", "Hello World!")))))
+        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, TEST_CASES))
         executorService.executeCode(_, _) >> Mono.empty()
 
         then:
-        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, new ExecutionRequest(JAVA_CODE, JAVA11)))
+        StepVerifier.create(executionService.executeCode(MEMBER_ID, QUESTION_ID, REQUEST))
                 .verifyError(ExecutionException.class)
     }
 
@@ -113,10 +113,12 @@ class ExecutionServiceTest extends Specification {
     def "결과 리스트를 조회한다"() {
         when:
         memberRepository.findById(MEMBER_ID) >> Mono.just(new Member(MEMBER_ID))
-        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, new TestCases(Arrays.asList(new TestCase("", "Hello World!")))))
+        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, TEST_CASES))
         executionResultRepository.findAllByMemberIdAndQuestionId(MEMBER_ID, QUESTION_ID) >> Flux.just(
-                new SucceededResult(QUESTION_ID, MEMBER_ID, CODE, true, LocalDateTime.now(), 1000L, 234L),
-                new FailedResult(QUESTION_ID, MEMBER_ID, CODE, false, LocalDateTime.now(), Cause.WRONG_ANSWER, "결과 값이 `Hello World`가 아닙니다. 출력된 결과는 `Hello World!`입니다."))
+                new SucceededResult(QUESTION_ID, MEMBER_ID, CODE, true, LocalDateTime.now(),
+                        1000L, 234L),
+                new FailedResult(QUESTION_ID, MEMBER_ID, CODE, false, LocalDateTime.now(),
+                        Cause.WRONG_ANSWER, "결과 값이 `Hello World`가 아닙니다. 출력된 결과는 `Hello World!`입니다."))
         then:
         StepVerifier.create(executionService.findResults(MEMBER_ID, QUESTION_ID))
                 .expectNextCount(2)
@@ -149,8 +151,10 @@ class ExecutionServiceTest extends Specification {
     def "결과 리스트를 조회할 때, 값이 비어있으면 빈 리스트를 반환한다"() {
         when:
         memberRepository.findById(MEMBER_ID) >> Mono.just(new Member(MEMBER_ID))
-        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID, new TestCases(Arrays.asList(new TestCase("", "Hello World!")))))
+        questionRepository.findById(QUESTION_ID) >> Mono.just(new Question(QUESTION_ID,
+                new TestCases(Arrays.asList(new TestCase("", "Hello World!")))))
         executionResultRepository.findAllByMemberIdAndQuestionId(MEMBER_ID, QUESTION_ID) >> Flux.empty()
+
         then:
         StepVerifier.create(executionService.findResults(MEMBER_ID, QUESTION_ID))
                 .expectNextCount(0)

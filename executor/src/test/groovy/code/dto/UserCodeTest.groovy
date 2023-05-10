@@ -6,17 +6,13 @@ import code.exception.InvalidCodeTypeException
 import spock.lang.Specification
 
 class UserCodeTest extends Specification {
-
-    def static final JAVA11 = "JAVA11"
-    def static final JAVA_CODE = """
+    private static final String JAVA_CODE = """
         public class Main {
                 public static void main(String[] args) {
                     System.out.println("Hello World!");
                 }
         }"""
-
-    def static final PYTHON3 = "PYTHON3"
-    def static final PYTHON_CODE = """
+    private static final String PYTHON_CODE = """
         print("Hello World!")
     """
 

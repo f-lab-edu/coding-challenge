@@ -15,9 +15,9 @@ import java.time.LocalDateTime
 @ExtendWith(MockitoExtension.class)
 class ExecutionControllerTest extends Specification {
 
-    public static final String USER_ID = "this-is-user-id"
-    def executionService = Mock(ExecutionService)
-    def executionController = new ExecutionController(executionService)
+    private static final String USER_ID = "this-is-user-id"
+    private final executionService = Mock(ExecutionService)
+    private final executionController = new ExecutionController(executionService)
 
     //C7
     def "코드를 실행한다."() {

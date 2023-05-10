@@ -30,6 +30,8 @@ class CodeTest extends Specification {
         """
     private static final String PYTHON_CODE = "print(\"Hello World!\")"
     private static final String PYTHON_CODE_FOR_INPUT = "import sys\nprint(sys.stdin.readline())"
+    private static final TestCase WRONG_TESTCASE = new TestCase(null, "Hello World")
+    private static final TestCase CORRECT_TESTCASE = new TestCase(null, "Hello World!")
 
     //C45
     def "자바 코드와 파이썬 코드를 생성한다"() {
@@ -49,7 +51,7 @@ class CodeTest extends Specification {
     def "코드를 실행해 성공한 결과를 반환한다"() {
         given:
         def userCode = Code.of(lang, code);
-        def testCases = new TestCases(Arrays.asList(new TestCase(null, "Hello World!")))
+        def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE))
 
         expect:
         StepVerifier.create(userCode.execute(testCases))
@@ -68,7 +70,7 @@ class CodeTest extends Specification {
     def "코드를 실행해 실패한 결과를 반환한다"() {
         given:
         def userCode = Code.of(lang, code);
-        def wrongTestCases = new TestCases(Arrays.asList(new TestCase(null, "Hello World")))
+        def wrongTestCases = new TestCases(Arrays.asList(WRONG_TESTCASE))
 
         expect:
         StepVerifier.create(userCode.execute(wrongTestCases))
@@ -88,8 +90,7 @@ class CodeTest extends Specification {
     def "여러 개의 성공하는 테스트 케이스를 실행한다"() {
         given:
         def userCode = Code.of(lang, code);
-        def testCases = new TestCases(Arrays.asList(new TestCase(null, "Hello World!"),
-                new TestCase(null, "Hello World!")))
+        def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE, CORRECT_TESTCASE))
 
         expect:
         StepVerifier.create(userCode.execute(testCases))
@@ -108,8 +109,7 @@ class CodeTest extends Specification {
     def "일부 실패하는 테스트 케이스를 넣어 실행한다"() {
         given:
         def userCode = Code.of(lang, code);
-        def testCases = new TestCases(Arrays.asList(new TestCase(null, "Hello World!"),
-                new TestCase(null, "Hello Worl!")))
+        def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE, WRONG_TESTCASE))
 
         expect:
         StepVerifier.create(userCode.execute(testCases))

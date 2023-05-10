@@ -9,9 +9,8 @@ import reactor.test.StepVerifier
 import spock.lang.Specification
 
 class CodeExecutorServiceTest extends Specification {
-
-    def codeExecutorService = new CodeExecutorService()
-    def JAVA_CODE = """
+    private static final CodeExecutorService codeExecutorService = new CodeExecutorService()
+    private static final String JAVA_CODE = """
         public class Main {
                 public static void main(String[] args) {
                     System.out.println("Hello World!");

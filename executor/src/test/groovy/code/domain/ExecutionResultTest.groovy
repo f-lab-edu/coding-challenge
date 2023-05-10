@@ -6,9 +6,9 @@ import spock.lang.Specification
 import java.time.LocalDateTime
 
 class ExecutionResultTest extends Specification {
-    def static final QUESTION_ID = UUID.randomUUID().toString()
-    def static final USER_ID = UUID.randomUUID().toString()
-    def static final CODE = new UserCode(Lang.PYTHON3, """
+    private static final String QUESTION_ID = UUID.randomUUID().toString()
+    private static final String USER_ID = UUID.randomUUID().toString()
+    private static final UserCode CODE = new UserCode(Lang.PYTHON3, """
                 print("Hello World!")
         """)
 
