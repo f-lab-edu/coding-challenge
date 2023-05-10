@@ -1,5 +1,6 @@
 package code.dto;
 
+import java.util.List;
 import java.util.Objects;
 
 import code.domain.Cause;
@@ -12,11 +13,14 @@ public class TestResult {
     }
 
     public static TestResult of(String message, String output) {
-        if (message.contains("Exception")) {
+        if (isException(message)) {
             return new FailedTestResult(false, Cause.ERROR, extractCause(message));
-        } else if (Objects.equals(output, extractOutput(message))) {
+        }
+
+        if (isCorrect(message, output)) {
             return new SucceededTestResult(true, extractExecutionTime(message), extractMemoryUsage(message));
         }
+
         return new FailedTestResult(false, Cause.WRONG_ANSWER, "");
     }
 
@@ -24,25 +28,37 @@ public class TestResult {
         return isSucceeded;
     }
 
-    public static TestResult extract(TestResult nowResult, TestResult nextResult) {
-        if (nextResult instanceof FailedTestResult) {
-            return nextResult;
-        }
-        return nowResult.extract(nextResult);
+    public static TestResult extract(List<TestResult> results) {
+        var totalResult = (SucceededTestResult) results.stream().reduce(TestResult::extract).get();
+        return new SucceededTestResult(true, totalResult.getExecutionTime(),
+                                       totalResult.getMemoryUsage() / results.size());
     }
 
     private TestResult extract(TestResult nextResult) {
+        if (!this.isSucceeded || !nextResult.isSucceeded) {
+            throw new IllegalArgumentException();
+        }
+
         SucceededTestResult nowResult = (SucceededTestResult) this;
         SucceededTestResult nextSucceededResult = (SucceededTestResult) nextResult;
+
         return new SucceededTestResult(
                 true,
                 nowResult.getExecutionTime() + nextSucceededResult.getExecutionTime(),
-                (nowResult.getMemoryUsage() + nextSucceededResult.getMemoryUsage()) / 2
+                (nowResult.getMemoryUsage() + nextSucceededResult.getMemoryUsage())
         );
     }
 
+    private static boolean isException(String message) {
+        return message.contains("Exception");
+    }
+
+    private static boolean isCorrect(String message, String output) {
+        return Objects.equals(extractOutput(message), output);
+    }
+
     private static String extractCause(String message) {
-        return "";
+        return message;
     }
 
     private static String extractOutput(String message) {

@@ -11,14 +11,17 @@ import java.util.Objects;
 import java.util.UUID;
 
 import code.domain.Lang;
+import code.dto.FailedTestResult;
 import code.dto.TestCase;
 import code.dto.TestCases;
 import code.dto.TestResult;
 import jakarta.annotation.Nullable;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+@Slf4j
 public abstract class AbstractCode {
     private final Path path;
     protected static final String DIRECTORY = "/Users/keonchanglee/Desktop/codingtest/";
@@ -36,14 +39,21 @@ public abstract class AbstractCode {
 
     public Mono<TestResult> execute(TestCases testCases) {
         return Flux.fromIterable(testCases.testCases())
-                   .map(this::execute)
-                   .reduce(TestResult::extract)
+                   .flatMap(testCase -> {
+                       final var result = execute(testCase);
+                       if (result instanceof FailedTestResult failed) {
+                           return Mono.error(new RuntimeException(failed.getMessage()));
+                       }
+                       return Mono.just(result);
+                   })
+                   .collectList()
+                   .map(TestResult::extract)
                    .publishOn(Schedulers.boundedElastic())
                    .doFinally(signal -> {
                        try {
                            Files.delete(path);
                        } catch (IOException e) {
-                           throw new RuntimeException("파일 삭제에 실패했습니다.");
+                            log.warn("파일이 정상적으로 삭제되지 않았습니다. PATH : {}", path);
                        }
                    });
     }
