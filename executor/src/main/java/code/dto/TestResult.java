@@ -6,8 +6,6 @@ import java.util.Objects;
 import code.domain.Cause;
 
 public class TestResult {
-    private static final String EXCEPTION = "EXCEPTION";
-    private static final String ERROR = "ERROR";
     private final Boolean isSucceeded;
 
     TestResult(Boolean isSucceeded) {
@@ -48,22 +46,6 @@ public class TestResult {
     }
 
     private static boolean isCorrect(String message, String output) {
-        return Objects.equals(extractOutput(message), output);
-    }
-
-    private static String extractCause(String message) {
-        return message;
-    }
-
-    private static String extractOutput(String message) {
-        return message;
-    }
-
-    private static Long extractMemoryUsage(String message) {
-        return 0L;
-    }
-
-    private static Long extractExecutionTime(String message) {
-        return 0L;
+        return Objects.equals(message, output);
     }
 }
