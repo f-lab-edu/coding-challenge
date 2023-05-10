@@ -21,7 +21,7 @@ public class TestResult {
             return new SucceededTestResult(true, extractExecutionTime(message), extractMemoryUsage(message));
         }
 
-        return new FailedTestResult(false, Cause.WRONG_ANSWER, "");
+        return new FailedTestResult(false, Cause.WRONG_ANSWER, "WRONG_ANSWER");
     }
 
     public Boolean isSucceeded() {
@@ -35,7 +35,7 @@ public class TestResult {
     }
 
     private TestResult extract(TestResult nextResult) {
-        if (!this.isSucceeded || !nextResult.isSucceeded) {
+        if (this instanceof FailedTestResult || nextResult instanceof FailedTestResult) {
             throw new IllegalArgumentException();
         }
 

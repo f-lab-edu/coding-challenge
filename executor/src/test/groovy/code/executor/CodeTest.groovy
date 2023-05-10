@@ -109,7 +109,7 @@ class CodeTest extends Specification {
     def "일부 실패하는 테스트 케이스를 넣어 실행한다"() {
         given:
         def userCode = AbstractCode.of(lang, code);
-        def testCases = new TestCases(Arrays.asList(CORRECT_TESTCASE, WRONG_TESTCASE))
+        def testCases = new TestCases(Arrays.asList(WRONG_TESTCASE, CORRECT_TESTCASE))
 
         expect:
         StepVerifier.create(userCode.execute(testCases))

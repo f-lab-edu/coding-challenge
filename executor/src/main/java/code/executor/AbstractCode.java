@@ -10,11 +10,14 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.UUID;
 
+import code.domain.Cause;
 import code.domain.Lang;
 import code.dto.FailedTestResult;
 import code.dto.TestCase;
 import code.dto.TestCases;
 import code.dto.TestResult;
+import code.exception.ThrowerResultExecution;
+import code.exception.WrongResultException;
 import jakarta.annotation.Nullable;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Flux;
@@ -40,20 +43,31 @@ public abstract class AbstractCode {
     public Mono<TestResult> execute(TestCases testCases) {
         return Flux.fromIterable(testCases.testCases())
                    .flatMap(testCase -> {
-                       final var result = execute(testCase);
-                       if (result instanceof FailedTestResult failed) {
-                           return Mono.error(new RuntimeException(failed.getMessage()));
+                       final var testResult = execute(testCase);
+                       if (testResult instanceof FailedTestResult failedTestResult && failedTestResult
+                               .getCause().equals(Cause.WRONG_ANSWER)) {
+                           return Mono.error(new WrongResultException(failedTestResult.getMessage()));
                        }
-                       return Mono.just(result);
+
+                       if (testResult instanceof FailedTestResult failedTestResult && failedTestResult
+                               .getCause().equals(Cause.ERROR)) {
+                           return Mono.error(new ThrowerResultExecution(failedTestResult.getMessage()));
+                       }
+
+                       return Mono.just(testResult);
                    })
                    .collectList()
                    .map(TestResult::extract)
+                   .onErrorResume(WrongResultException.class,
+                                  e -> Mono.just(FailedTestResult.wrong(e.getMessage())))
+                   .onErrorResume(ThrowerResultExecution.class,
+                                  e -> Mono.just(FailedTestResult.error(e.getMessage())))
                    .publishOn(Schedulers.boundedElastic())
                    .doFinally(signal -> {
                        try {
                            Files.delete(path);
                        } catch (IOException e) {
-                            log.warn("파일이 정상적으로 삭제되지 않았습니다. PATH : {}", path);
+                           log.warn("파일이 정상적으로 삭제되지 않았습니다. PATH : {}", path);
                        }
                    });
     }
