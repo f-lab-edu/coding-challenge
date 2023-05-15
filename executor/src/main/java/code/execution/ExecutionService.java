@@ -118,6 +118,7 @@ public class ExecutionService {
     }
 
     private Mono<TestResult> executeCode(ExecutionRequest request, Question question) {
-        return executorService.executeCode(new UserCode(Lang.JAVA11, request.code()), question.getTestCases());
+        return executorService.executeCode(new UserCode(Lang.valueOf(request.lang()), request.code()),
+                                           question.getTestCases());
     }
 }

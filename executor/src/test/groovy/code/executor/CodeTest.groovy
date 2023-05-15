@@ -109,7 +109,7 @@ class CodeTest extends Specification {
                 }).verifyComplete()
 
         where:
-        lang         | code        | classType
+        lang         | code              | classType
         Lang.PYTHON3 | ERROR_PYTHON_CODE | PythonCode.class
         Lang.JAVA11  | ERROR_JAVA_CODE   | JavaCode.class
     }

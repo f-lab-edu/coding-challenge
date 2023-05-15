@@ -15,10 +15,9 @@ public final class FailedResult extends ExecutionResult {
     @ToString.Include
     private final String message;
 
-    public FailedResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
+    public FailedResult(String id, String questionId, String userId, UserCode userCode, Boolean isSucceed,
                         LocalDateTime createdAt, Cause cause, String message) {
-        super(questionId, userId, userCode, isSucceed, createdAt);
-
+        super(id, questionId, userId, userCode, isSucceed, createdAt);
         if (cause == null) {
             throw InvalidFailedResultException.invalidCause();
         }
@@ -29,5 +28,10 @@ public final class FailedResult extends ExecutionResult {
 
         this.cause = cause;
         this.message = message;
+    }
+
+    public FailedResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
+                        LocalDateTime createdAt, Cause cause, String message) {
+        this(null, questionId, userId, userCode, isSucceed, createdAt, cause, message);
     }
 }
