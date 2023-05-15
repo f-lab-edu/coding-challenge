@@ -48,6 +48,7 @@ public class MemoryDummyDataLoader implements DummyDataLoader {
     public Map<String, String> loadData() {
         final var question_key = "question test key";
         final var memberKey = "this-is-user-id";
+        final var succeededResultKey = "succeeded result key";
 
         questionRepository
                 .save(new Question(question_key, new TestCases(List.of(new TestCase("", "Hello World!")))))
@@ -56,11 +57,11 @@ public class MemoryDummyDataLoader implements DummyDataLoader {
         resultRepository.save(new FailedResult(null, question_key, memberKey, WRONG_CODE,
                                                false, LocalDateTime.now(), Cause.WRONG_ANSWER, "wrong answer"))
                         .subscribe();
-        resultRepository.save(new SucceededResult(null, question_key, memberKey, JAVA_CODE,
+        resultRepository.save(new SucceededResult(succeededResultKey, question_key, memberKey, JAVA_CODE,
                                                   true, LocalDateTime.now(), 31L, 1235L))
                         .subscribe();
 
-        return Map.of("questionId", question_key, "memberId", memberKey);
+        return Map.of("questionId", question_key, "memberId", memberKey, "resultId", succeededResultKey);
     }
 
     @Override

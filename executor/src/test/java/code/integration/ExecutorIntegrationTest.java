@@ -158,7 +158,7 @@ public class ExecutorIntegrationTest {
 
     // C52
     @Test
-    @DisplayName("결과 리스트를 조회한다.")
+    @DisplayName("사용자 식별자와 문제 식별자를 입력해 결과 리스트를 조회한다.")
     void findResults() {
         // given
         var questionId = getQuestionId();
@@ -177,9 +177,18 @@ public class ExecutorIntegrationTest {
 
     // C53
     @Test
-    @DisplayName("결과를 조회한다.")
+    @DisplayName("결과 식별자를 입력해 결과를 조회한다.")
     void findResult() {
+        // given
+        var resultId = getResultId();
+        var result = resultRepository.findById(resultId).block();
 
+        // when & then
+        StepVerifier.create(findResult(resultId))
+                    .consumeNextWith(response -> {
+                        var executionResponse = getExecutionResponse(response);
+                        assert executionResponse.isSucceeded() == result.getIsSucceed();
+                    }).verifyComplete();
     }
 
     private Flux<EntityModel> executeCode(String questionId, String lang, String code)
@@ -215,12 +224,24 @@ public class ExecutorIntegrationTest {
                             .returnResult(CollectionModel.class).getResponseBody();
     }
 
+    private Flux<EntityModel> findResult(String resultId) {
+        return webTestClient.get().uri("/v1/codes/results/{resultsId}", resultId)
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .expectStatus().isOk()
+                            .returnResult(EntityModel.class).getResponseBody();
+    }
+
     private String getQuestionId() {
         return loadedData.get("questionId");
     }
 
     private String getMemberId() {
         return loadedData.get("memberId");
+    }
+
+    private String getResultId() {
+        return loadedData.get("resultId");
     }
 
     private ExecutionResponse getExecutionResponse(EntityModel result) {
