@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
@@ -17,12 +18,14 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import code.domain.MemberRepository;
-import code.domain.QuestionRepository;
 import code.dto.ExecutionResponse;
+import code.infra.MemoryExecutionResultRepository;
+import code.infra.MemoryMemberRepository;
+import code.infra.MemoryQuestionRepository;
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 import util.DummyDataLoader;
+import util.MemoryDummyDataLoader;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
@@ -56,9 +59,11 @@ public class ExecutorIntegrationTest {
     @Autowired
     protected WebTestClient webTestClient;
     @Autowired
-    private QuestionRepository questionRepository;
+    private MemoryQuestionRepository questionRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    private MemoryMemberRepository memberRepository;
+    @Autowired
+    private MemoryExecutionResultRepository resultRepository;
     @Autowired
     private ObjectMapper objectMapper;
     private Map<String, String> loadedData;
@@ -68,7 +73,9 @@ public class ExecutorIntegrationTest {
         webTestClient = webTestClient.mutate()
                                      .responseTimeout(Duration.ofSeconds(20))
                                      .build();
-        DummyDataLoader dataLoader = new DummyDataLoader(questionRepository, memberRepository);
+        DummyDataLoader dataLoader = new MemoryDummyDataLoader(questionRepository, memberRepository,
+                                                               resultRepository);
+        dataLoader.cleanUp();
         loadedData = dataLoader.loadData();
     }
 
@@ -153,7 +160,19 @@ public class ExecutorIntegrationTest {
     @Test
     @DisplayName("결과 리스트를 조회한다.")
     void findResults() {
+        // given
+        var questionId = getQuestionId();
+        var memberId = getMemberId();
+        var results = resultRepository.findAllByMemberIdAndQuestionId(memberId, questionId)
+                                      .collectList()
+                                      .block();
 
+        // when & then
+        StepVerifier.create(findResults(questionId))
+                    .consumeNextWith(result -> {
+                        assert result.getContent().size() == results.size();
+                    })
+                    .verifyComplete();
     }
 
     // C53
@@ -185,8 +204,23 @@ public class ExecutorIntegrationTest {
                             .getResponseBody();
     }
 
+    private Flux<CollectionModel> findResults(String questionId) {
+        return webTestClient.get().uri(uriBuilder -> uriBuilder
+                                    .path("/v1/codes/results")
+                                    .queryParam("questionId", questionId)
+                                    .build())
+                            .accept(MediaType.APPLICATION_JSON)
+                            .exchange()
+                            .expectStatus().isOk()
+                            .returnResult(CollectionModel.class).getResponseBody();
+    }
+
     private String getQuestionId() {
         return loadedData.get("questionId");
+    }
+
+    private String getMemberId() {
+        return loadedData.get("memberId");
     }
 
     private ExecutionResponse getExecutionResponse(EntityModel result) {

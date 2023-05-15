@@ -29,4 +29,8 @@ public class MemoryQuestionRepository implements QuestionRepository {
         map.put(newQuestion.getId(), newQuestion);
         return Mono.just(question);
     }
+
+    public Mono<Void> deleteAll() {
+        return Mono.fromRunnable(map::clear);
+    }
 }

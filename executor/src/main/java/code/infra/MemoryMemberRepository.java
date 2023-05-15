@@ -29,4 +29,8 @@ public class MemoryMemberRepository implements MemberRepository {
         map.put(newMember.getMemberId(), newMember);
         return Mono.just(member);
     }
+
+    public Mono<Void> deleteAll() {
+        return Mono.fromRunnable(map::clear);
+    }
 }

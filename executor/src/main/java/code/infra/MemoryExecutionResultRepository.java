@@ -65,4 +65,8 @@ public class MemoryExecutionResultRepository implements ExecutionResultRepositor
                                                                .equals(questionId))
                                     .toList());
     }
+
+    public Mono<Void> deleteAll() {
+        return Mono.fromRunnable(map::clear);
+    }
 }
