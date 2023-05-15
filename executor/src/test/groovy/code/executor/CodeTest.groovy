@@ -74,7 +74,7 @@ class CodeTest extends Specification {
         Lang.JAVA11  | JAVA_CODE   | JavaCode.class
     }
 
-    //C47
+    //C49
     def "코드를 실행해 실패한 결과를 반환한다"() {
         given:
         def userCode = AbstractCode.of(lang, code);
@@ -94,7 +94,7 @@ class CodeTest extends Specification {
         Lang.JAVA11  | JAVA_CODE   | JavaCode.class
     }
 
-    //C48
+    //C50
     def "코드를 실행할 때 예외가 발생해도 결과를 반환한다"() {
         given:
         def userCode = AbstractCode.of(lang, code);

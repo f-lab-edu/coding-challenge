@@ -119,6 +119,7 @@ public class ExecutorIntegrationTest {
                     .verifyComplete();
     }
 
+    // C55
     @Test
     @DisplayName("결과가 잘못된 코드를 실행하면 실패한 결과를 반환받는다.")
     void executeIncorrectCode() throws JsonProcessingException {
@@ -137,6 +138,7 @@ public class ExecutorIntegrationTest {
                     .verifyComplete();
     }
 
+    // C54
     @Test
     @DisplayName("오류가 발생한 코드를 실행하면 오류 결과를 반환받는다.")
     void executeInvalidCode() throws JsonProcessingException {
