@@ -1,5 +1,6 @@
 package code.infra;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class MemoryMemberRepository implements MemberRepository {
 
     @Override
     public Mono<Member> save(Member member) {
+        adjustMaximumCapacity();
         if (member.getMemberId() != null) {
             map.put(member.getMemberId(), member);
             return Mono.just(member);
@@ -32,5 +34,14 @@ public class MemoryMemberRepository implements MemberRepository {
 
     public Mono<Void> deleteAll() {
         return Mono.fromRunnable(map::clear);
+    }
+
+    private void adjustMaximumCapacity() {
+        if (map.size() > 200) {
+            String id = map.values().stream()
+                           .min(Comparator.comparing(Member::getMemberId))
+                           .get().getMemberId();
+            map.remove(id);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package code.infra;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -19,6 +20,7 @@ public class MemoryExecutionResultRepository implements ExecutionResultRepositor
 
     @Override
     public Mono<ExecutionResult> save(ExecutionResult executionResult) {
+        adjustMaximumCapacity();
         if (executionResult.getId() != null) {
             map.put(executionResult.getId(), executionResult);
             return Mono.just(executionResult);
@@ -68,5 +70,14 @@ public class MemoryExecutionResultRepository implements ExecutionResultRepositor
 
     public Mono<Void> deleteAll() {
         return Mono.fromRunnable(map::clear);
+    }
+
+    private void adjustMaximumCapacity() {
+        if (map.size() > 200) {
+            String id = map.values().stream()
+                           .min(Comparator.comparing(ExecutionResult::getCreatedAt))
+                           .get().getId();
+            map.remove(id);
+        }
     }
 }
