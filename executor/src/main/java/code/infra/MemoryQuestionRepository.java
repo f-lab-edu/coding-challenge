@@ -1,8 +1,6 @@
 package code.infra;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
@@ -13,7 +11,7 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public class MemoryQuestionRepository implements QuestionRepository {
-    private final Map<String, Question> map = new HashMap<>();
+    private final LinkedHashMap<String, Question> map = new LinkedHashMap<>();
 
     @Override
     public Mono<Question> findById(String questionId) {
@@ -39,7 +37,7 @@ public class MemoryQuestionRepository implements QuestionRepository {
     private void adjustMaximumCapacity() {
         if (map.size() > 200) {
             String id = map.values().stream()
-                           .min(Comparator.comparing(Question::getId))
+                           .findFirst()
                            .get().getId();
             map.remove(id);
         }

@@ -1,8 +1,6 @@
 package code.infra;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
@@ -16,7 +14,7 @@ import reactor.core.publisher.Mono;
 
 @Repository
 public class MemoryExecutionResultRepository implements ExecutionResultRepository {
-    private final Map<String, ExecutionResult> map = new HashMap<>();
+    private final LinkedHashMap<String, ExecutionResult> map = new LinkedHashMap<>();
 
     @Override
     public Mono<ExecutionResult> save(ExecutionResult executionResult) {
@@ -75,7 +73,7 @@ public class MemoryExecutionResultRepository implements ExecutionResultRepositor
     private void adjustMaximumCapacity() {
         if (map.size() > 200) {
             String id = map.values().stream()
-                           .min(Comparator.comparing(ExecutionResult::getCreatedAt))
+                           .findFirst()
                            .get().getId();
             map.remove(id);
         }
