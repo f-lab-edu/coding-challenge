@@ -14,13 +14,18 @@ public final class SucceededResult extends ExecutionResult {
     @ToString.Include
     private final Long averageMemoryUsage;
 
-    public SucceededResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
+    public SucceededResult(String id, String questionId, String userId, UserCode userCode, Boolean isSucceed,
                            LocalDateTime createdAt, Long totalExecutionTime, Long averageMemoryUsage) {
-        super(questionId, userId, userCode, isSucceed, createdAt);
+        super(id, questionId, userId, userCode, isSucceed, createdAt);
         ensureTotalExecutionTime(totalExecutionTime);
         ensureAverageMemoryUsage(averageMemoryUsage);
         this.totalExecutionTime = totalExecutionTime;
         this.averageMemoryUsage = averageMemoryUsage;
+    }
+
+    public SucceededResult(String questionId, String userId, UserCode userCode, Boolean isSucceed,
+                           LocalDateTime createdAt, Long totalExecutionTime, Long averageMemoryUsage) {
+        this(null, questionId, userId, userCode, isSucceed, createdAt, totalExecutionTime, averageMemoryUsage);
     }
 
     private void ensureAverageMemoryUsage(Long averageMemoryUsage) {

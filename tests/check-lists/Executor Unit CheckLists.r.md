@@ -203,13 +203,13 @@
 
     * 코드(`Code`)와 타입 정보(`Lang`)을 입력해 코드를 생성한다.
 
-* [unknown] 46 `test execute` : 코드를 여러 번 실항한다.
+* [done] 46 `test execute` : 코드를 여러 번 실행한다.
 
     * 코드를 여러 번 실행해 실행 결과(`ExecutionResult`)를 반환한다.
 
 * [done] 47 `test execute` : 입력 값이 없는 코드를 실행한다.
 
-* [unknown] 32 `test execute` : 입력 값이 있는 코드를 실행한다.
+* [done] 32 `test execute` : 입력 값이 있는 코드를 실행한다.
 
 ###### SucceededTestResult
 
@@ -229,7 +229,7 @@
 
     * 실패 원인(`Cause`)과 실패 정보(`Message`)를 입력받아 실패한 실행 결과를 생성한다.
 
-* [unknown] 50 `test FailedTestResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
+* [done] 50 `test FailedTestResult` : 실패 원인이 `ERROR`인 실행 결과를 생성한다.
 
     * 실행 결과를 생성할 때, 성공 여부 정보(`IsSucceed`)가 `false`이다.
 

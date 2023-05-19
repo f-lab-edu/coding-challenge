@@ -25,7 +25,8 @@ public class TestResult {
     }
 
     public static TestResult extract(List<TestResult> results) {
-        final var totalResult = (SucceededTestResult) results.stream().reduce(TestResult::extract).get();
+        final var totalResult = (SucceededTestResult) results.stream().reduce(TestResult::extract)
+                                                             .orElseThrow();
         return new SucceededTestResult(true, totalResult.getExecutionTime(),
                                        totalResult.getMemoryUsage() / results.size());
     }
